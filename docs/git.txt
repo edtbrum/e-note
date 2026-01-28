@@ -1,0 +1,6 @@
+Commits pequenos e frequentes:
+
+git status
+git add .
+git commit -m "Implementa estrutura inicial de notas"
+git push
