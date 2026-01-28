@@ -1,0 +1,6 @@
+build/
+*.o
+*.exe
+*.log
+node_modules/
+.env
