@@ -6,6 +6,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+add_subdirectory(src/domain)
+
 add_executable(e-note src/main.cpp)
 
 target_include_directories(e-note PUBLIC ${CMAKE_SOURCE_DIR}/src)
+
+target_link_libraries(e-note PRIVATE lib_domain)

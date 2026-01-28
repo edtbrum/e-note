@@ -4,3 +4,5 @@ build/
 *.log
 node_modules/
 .env
+compile_commands.json
+.cache/
