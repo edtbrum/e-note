@@ -1,4 +1,4 @@
--- logar já usando db_enote
+-- logar já usando db_enote com usuário dev
 -- mysql -u dev -p db_enote
 
 CREATE DATABASE IF NOT EXISTS db_enote;
@@ -10,4 +10,15 @@ SHOW TABLES;
 
 SELECT TABLE_NAME, TABLE_TYPE, ENGINE, TABLE_ROWS, CREATE_TIME 
 FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'db_enote';
++------------+------------+--------+------------+---------------------+
+| TABLE_NAME | TABLE_TYPE | ENGINE | TABLE_ROWS | CREATE_TIME         |
++------------+------------+--------+------------+---------------------+
+| autor      | BASE TABLE | InnoDB |          0 | 2026-01-28 18:02:31 |
++------------+------------+--------+------------+---------------------+
 
+SHOW VARIABLES LIKE 'default_storage_engine';
++------------------------+--------+
+| Variable_name          | Value  |
++------------------------+--------+
+| default_storage_engine | InnoDB |
++------------------------+--------+
