@@ -29,7 +29,12 @@ sql::Connection* cConnectionMySQL::connection() noexcept {
 }
 
 bool cConnectionMySQL::isConnected() const {
-    return m_conn->isValid();
+    try {
+        return m_conn && m_conn->isValid();
+    }
+    catch (const sql::SQLException& e) {
+        throw std::runtime_error("Error: " + std::string(e.what()));
+    }
 }
 
 void cConnectionMySQL::reconnect() {

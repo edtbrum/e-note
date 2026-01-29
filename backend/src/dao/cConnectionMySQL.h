@@ -12,6 +12,7 @@ public:
 
     bool isConnected() const;
     void reconnect();
+
 private:
     std::unique_ptr<sql::Connection> m_conn;
 };

@@ -16,5 +16,5 @@ target_include_directories(e-note PUBLIC ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(e-note PRIVATE lib_domain)
 target_link_libraries(e-note PRIVATE lib_dao)
 
-find_library(MYSQL_LIB mysqlcppconn REQUIRED)
-target_link_libraries(e-note PRIVATE ${MYSQL_LIB})
+enable_testing()
+add_subdirectory(src/test)
