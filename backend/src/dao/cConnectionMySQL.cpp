@@ -8,7 +8,7 @@ cConnectionMySQL::cConnectionMySQL() {
     std::string hostname = "tcp://127.0.0.1:3306";
     std::string username = "dev";
     std::string password = "password";
-    std::string schema = "db_rentalcar";
+    std::string schema = "db_enote";
 
     try {
         sql::Driver *driver = get_driver_instance();
@@ -42,7 +42,7 @@ void cConnectionMySQL::reconnect() {
 
     try {
         if (m_conn && m_conn->reconnect()) {
-            m_conn->setSchema("db_rentalcar");
+            m_conn->setSchema("db_enote");
         }
     }
     catch (const sql::SQLException& e) {

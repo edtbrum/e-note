@@ -1,4 +1,7 @@
-add_library(lib_dao STATIC cConnectionMySQL.cpp)
+add_library(lib_dao STATIC 
+    cConnectionMySQL.cpp
+    cAutorDAO.cpp
+)
 
 target_include_directories(lib_dao PUBLIC ${CMAKE_SOURCE_DIR}/src)
 
