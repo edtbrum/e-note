@@ -57,6 +57,7 @@ cAutor cAutorDAO::find(cAutor& autor, eSearchAuthor type) {
         if (type == eSearchAuthor::AuthorID) { ssql = "SELECT * FROM autor WHERE id = ?"; }
         if (type == eSearchAuthor::AuthorName) { ssql = "SELECT * FROM autor WHERE nome = ?"; }
         if (type == eSearchAuthor::AuthorEmail) { ssql = "SELECT * FROM autor WHERE email = ?"; }
+        
         std::unique_ptr<sql::PreparedStatement> stmt(conn->prepareStatement(ssql));
         if (type == eSearchAuthor::AuthorID) { stmt->setInt(1, autor.identifier()); }
         if (type == eSearchAuthor::AuthorName) { stmt->setString(1, autor.nome()); }

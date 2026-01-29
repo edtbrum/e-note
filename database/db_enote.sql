@@ -14,6 +14,7 @@ FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'db_enote';
 | TABLE_NAME | TABLE_TYPE | ENGINE | TABLE_ROWS | CREATE_TIME         |
 +------------+------------+--------+------------+---------------------+
 | autor      | BASE TABLE | InnoDB |          0 | 2026-01-28 18:02:31 |
+| nota       | BASE TABLE | InnoDB |          0 | 2026-01-29 09:31:09 |
 +------------+------------+--------+------------+---------------------+
 
 SHOW VARIABLES LIKE 'default_storage_engine';

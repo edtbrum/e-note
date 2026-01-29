@@ -9,7 +9,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_subdirectory(src/domain)
 add_subdirectory(src/dao)
 
-add_executable(e-note src/main.cpp)
+add_executable(e-note 
+    src/main.cpp
+    src/util/uTimePoint.cpp
+)
 
 target_include_directories(e-note PUBLIC ${CMAKE_SOURCE_DIR}/src)
 

@@ -1,2 +1,6 @@
 Chat GPT:
-- ajudar a escrever um README legal pro projeto
+- query para serviço
+- dao de nota com join
+-
+- 
+- 
