@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ostream>
 #include <string>
 #include <chrono>
 
@@ -24,6 +25,8 @@ public:
     void setcriado_em(time_point criado_em);
     void setatualizado_em(time_point atualizado_em);
     void setautor_id(int id);
+
+    friend std::ostream& operator<<(std::ostream& os, const cNota& nota);
 
 private:
     int m_id {};

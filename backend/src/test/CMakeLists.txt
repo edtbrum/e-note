@@ -10,3 +10,11 @@ target_include_directories(test_cAutorDAO PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(test_cAutorDAO PRIVATE lib_domain)
 target_link_libraries(test_cAutorDAO PRIVATE lib_dao)
 add_test(NAME tb_autor COMMAND test_cAutorDAO)
+
+# Teste de acesso à tabela nota
+add_executable(test_cNotaDAO test_cNotaDAO.cpp)
+target_include_directories(test_cNotaDAO PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_cNotaDAO PRIVATE lib_domain)
+target_link_libraries(test_cNotaDAO PRIVATE lib_dao)
+target_link_libraries(test_cNotaDAO PRIVATE lib_util)
+add_test(NAME tb_nota COMMAND test_cNotaDAO)

@@ -50,5 +50,12 @@ void cNota::setatualizado_em(time_point atualizado_em) {
 }
 
 void cNota::setautor_id(int id) {
-    if (id > 0) { m_id = id; }
+    if (id > 0) { m_autor_id = id; }
+}
+
+std::ostream& operator<<(std::ostream& os, const cNota& nota) {
+    os  << nota.m_id << "," << nota.m_titulo << "," << nota.m_conteudo 
+        << "," << nota.m_criado_em << "," << nota.m_atualizado_em 
+        << "," << nota.m_autor_id;
+    return os;
 }
