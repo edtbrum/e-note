@@ -2,6 +2,7 @@
 
 #include "dao/cConnectionMySQL.h"
 #include "domain/cNotaTag.h"
+#include <vector>
 
 class INotaTagDAO {
 public:
@@ -9,5 +10,5 @@ public:
 
     virtual cConnectionMySQL& get() = 0;
     virtual void insert(cNotaTag& ntag) = 0;
-    virtual cNotaTag findbynotaid (int id) = 0;
+    virtual std::vector<cNotaTag> findbynotaid (int id) = 0;
 };

@@ -1,4 +1,5 @@
 #include "cNotaTagDAO.h"
+#include "domain/cNotaTag.h"
 #include <cppconn/exception.h>
 #include <cppconn/prepared_statement.h>
 #include <cppconn/resultset.h>
@@ -6,6 +7,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 cNotaTagDAO::cNotaTagDAO(cConnectionMySQL& conn)
 : m_conn(conn) {}
@@ -32,7 +34,8 @@ void cNotaTagDAO::insert(cNotaTag& ntag) {
     }
 }
 
-cNotaTag cNotaTagDAO::findbynotaid (int id) {
+std::vector<cNotaTag> cNotaTagDAO::findbynotaid (int id) {
+    std::vector<cNotaTag> ntag;
     try {
         auto *conn = m_conn.connection();
         sql::SQLString ssql = "SELECT nota_id, tag_id FROM nota_tag WHERE nota_id = ?";
@@ -40,14 +43,18 @@ cNotaTag cNotaTagDAO::findbynotaid (int id) {
         stmt->setInt(1, id);
 
         std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
-        if (res->next()) {
-            cNotaTag ntag;
-            ntag.setnota_id(id);
-            ntag.settag_id(res->getInt("tag_id"));
-            return ntag;
+        while (res->next()) {
+            cNotaTag t;
+            t.setnota_id(res->getInt("nota_id"));
+            t.settag_id(res->getInt("tag_id"));
+            ntag.push_back(t);
         }
 
-        throw std::runtime_error("Error: [lembrete] Register not found, nota_id = " + std::to_string(id));
+        if (ntag.empty()) {
+            throw std::runtime_error("Error: Register not found, nota_id = " + std::to_string(id));
+        }
+
+        return ntag;
     }
     catch (const sql::SQLException& e) {
         throw std::runtime_error("Error: " + std::string(e.what()));

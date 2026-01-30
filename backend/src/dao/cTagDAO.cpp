@@ -47,7 +47,7 @@ cTag cTagDAO::findbyid(int id) {
             return tag;
         }
 
-        throw std::runtime_error("Error: [lembrete] Register not found by id = " + std::to_string(id));
+        throw std::runtime_error("Error: Register not found by id = " + std::to_string(id));
     }
     catch (const sql::SQLException& e) {
         throw std::runtime_error("Error: " + std::string(e.what()));
