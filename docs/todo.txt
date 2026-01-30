@@ -2,5 +2,5 @@ Chat GPT:
 - query para serviço
 - dao de nota com join
 -
-- 
+- dao para tag, nota_tag e nota_link
 - 

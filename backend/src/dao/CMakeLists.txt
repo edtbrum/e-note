@@ -3,6 +3,7 @@ add_library(lib_dao STATIC
     cAutorDAO.cpp
     cNotaDAO.cpp
     cLembreteDAO.cpp
+    cTagDAO.cpp
 )
 
 target_include_directories(lib_dao PUBLIC ${CMAKE_SOURCE_DIR}/src)
