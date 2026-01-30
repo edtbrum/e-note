@@ -2,6 +2,7 @@ add_library(lib_dao STATIC
     cConnectionMySQL.cpp
     cAutorDAO.cpp
     cNotaDAO.cpp
+    cLembreteDAO.cpp
 )
 
 target_include_directories(lib_dao PUBLIC ${CMAKE_SOURCE_DIR}/src)
