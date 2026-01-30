@@ -56,23 +56,22 @@ ORDER BY index_name, seq_in_index;
 
 INSERT INTO nota (titulo,conteudo,autor_id) VALUES 
 ("Primeiro titulo","Esta nota e de teste.",1);
-+----+-----------------+-----------------------+---------------------+---------------+----------+
-| id | titulo          | conteudo              | criado_em           | atualizado_em | autor_id |
-+----+-----------------+-----------------------+---------------------+---------------+----------+
-|  1 | Primeiro titulo | Esta nota e de teste. | 2026-01-29 09:38:08 | NULL          |        1 |
-+----+-----------------+-----------------------+---------------------+---------------+----------+
+
+INSERT INTO nota (titulo,conteudo,autor_id) VALUES 
+("Segundo titulo","Esta nota possui um link para Primeiro Titulo.",1);
++----+----------------+------------------------------------------------+---------------------+---------------------+----------+
+| id | titulo         | conteudo                                       | criado_em           | atualizado_em       | autor_id |
++----+----------------+------------------------------------------------+---------------------+---------------------+----------+
+|  1 | Primeira nota  | Esse nota aponta para o Google.                | 2026-01-29 09:38:08 | 2026-01-30 09:37:37 |        1 |
+| 10 | Segundo titulo | Esta nota possui um link para Primeiro Titulo. | 2026-01-30 09:32:39 | NULL                |        1 |
++----+----------------+------------------------------------------------+---------------------+---------------------+----------+
 
 -- Alterar nota
 
 UPDATE nota SET 
-    titulo = "Primeira nota",
-    conteudo = "Conteudo da nota foi alterado."
-WHERE id = 1;
-+----+---------------+--------------------------------+---------------------+---------------------+----------+
-| id | titulo        | conteudo                       | criado_em           | atualizado_em       | autor_id |
-+----+---------------+--------------------------------+---------------------+---------------------+----------+
-|  1 | Primeira nota | Conteudo da nota foi alterado. | 2026-01-29 09:38:08 | 2026-01-29 09:39:03 |        1 |
-+----+---------------+--------------------------------+---------------------+---------------------+----------+
+    titulo = "Segunda nota",
+    conteudo = "Esse nota aponta para a Primeira nota."
+WHERE id = 10;
 
 -- Consultas
 

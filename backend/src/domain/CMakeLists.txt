@@ -4,6 +4,7 @@ add_library(lib_domain STATIC
     cTag.cpp
     cNotaTag.cpp
     cLembrete.cpp
+    cNotaLink.cpp
 )
 
 target_include_directories(lib_domain PUBLIC ${CMAKE_SOURCE_DIR}/src)

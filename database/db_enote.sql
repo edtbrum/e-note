@@ -13,9 +13,10 @@ FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'db_enote';
 +------------+------------+--------+------------+---------------------+
 | TABLE_NAME | TABLE_TYPE | ENGINE | TABLE_ROWS | CREATE_TIME         |
 +------------+------------+--------+------------+---------------------+
-| autor      | BASE TABLE | InnoDB |          0 | 2026-01-28 18:02:31 |
+| autor      | BASE TABLE | InnoDB |          2 | 2026-01-28 18:02:31 |
 | lembrete   | BASE TABLE | InnoDB |          0 | 2026-01-29 17:54:54 |
 | nota       | BASE TABLE | InnoDB |          0 | 2026-01-29 09:31:09 |
+| nota_link  | BASE TABLE | InnoDB |          0 | 2026-01-30 09:26:57 |
 | nota_tag   | BASE TABLE | InnoDB |          0 | 2026-01-29 16:48:15 |
 | tag        | BASE TABLE | InnoDB |          0 | 2026-01-29 16:48:03 |
 +------------+------------+--------+------------+---------------------+

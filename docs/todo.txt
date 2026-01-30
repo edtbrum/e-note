@@ -2,5 +2,5 @@ Chat GPT:
 - query para serviço
 - dao de nota com join
 -
-- desenvolver cLembrete
+- 
 - 
