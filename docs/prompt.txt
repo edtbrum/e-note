@@ -9,3 +9,5 @@ de link externo. Minha tabela nota:
 +----+---------------+----------------------------------------+---------------------+---------------------+----------+
 
 ----
+
+Estou pensando em quais serviços vão ser necessários para esta aplicação. No cadastro de autores, o que é melhor, o serviço que grava um novo autor já retorna a lista atualizada de autores ou deve ser dois serviços separados?

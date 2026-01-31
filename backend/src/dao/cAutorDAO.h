@@ -8,9 +8,10 @@ public:
     cAutorDAO(cConnectionMySQL& conn);
 
     cConnectionMySQL& get() override;
-    void insert(cAutor& autor) override;
+    int insert(const cAutor& autor) override;
     void update(cAutor& autor) override;
-    cAutor find(cAutor& autor, eSearchAuthor type) override;
+    cAutor findbyid(int id) override;
+    std::vector<cAutor> list() override;
 
 private:
     cConnectionMySQL& m_conn;

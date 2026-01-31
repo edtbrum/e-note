@@ -1,4 +1,3 @@
-#include "dao/IAutorDAO.h"
 #include "dao/cAutorDAO.h"
 #include "dao/cConnectionMySQL.h"
 #include "domain/cAutor.h"
@@ -16,7 +15,7 @@ int main() {
     try {
         nconn->setAutoCommit(false);
 
-        cAutor nautor = autordao.find(autor, eSearchAuthor::AuthorID);
+        cAutor nautor = autordao.findbyid(autor.identifier());
         std::cout << ">> [OK] Find realizado com sucesso" << std::endl;
 
         autordao.insert(autor);
