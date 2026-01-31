@@ -12,6 +12,7 @@ public:
     void update(cAutor& autor) override;
     cAutor findbyid(int id) override;
     std::vector<cAutor> list() override;
+    void deletebyid(int id) override;
 
 private:
     cConnectionMySQL& m_conn;

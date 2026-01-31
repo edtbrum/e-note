@@ -10,4 +10,5 @@ public:
     cAutor createAutor(IAutorDAO& autor_dao, const cAutor& autor);
     void changeAutor(IAutorDAO& autor_dao, cAutor& autor);
     std::vector<cAutor> listAutores(IAutorDAO& autor_dao);
+    void deleteAutor(IAutorDAO& autor_dao, int id);
 };

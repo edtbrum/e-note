@@ -20,3 +20,7 @@ void cAutorService::changeAutor(IAutorDAO& autor_dao, cAutor& autor) {
 std::vector<cAutor> cAutorService::listAutores(IAutorDAO& autor_dao) {
     return autor_dao.list();
 }
+
+void cAutorService::deleteAutor(IAutorDAO& autor_dao, int id) {
+    autor_dao.deletebyid(id);
+}

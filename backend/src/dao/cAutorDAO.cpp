@@ -108,3 +108,19 @@ std::vector<cAutor> cAutorDAO::list() {
         throw std::runtime_error("Error: " + std::string(e.what()));
     }
 }
+
+void cAutorDAO::deletebyid(int id) {
+    try {
+        auto *conn = m_conn.connection();
+        sql::SQLString ssql = "DELETE FROM autor WHERE id = ?";
+        std::unique_ptr<sql::PreparedStatement> stmt(conn->prepareStatement(ssql));
+        stmt->setInt(1, id);
+
+        if (stmt->executeUpdate() == 0) {
+            throw std::runtime_error("Error: [cAutorDAO] Delete falhou, id = " + std::to_string(id));
+        }
+    }
+    catch (const sql::SQLException& e) {
+        throw std::runtime_error("Error: " + std::string(e.what()));
+    }
+}

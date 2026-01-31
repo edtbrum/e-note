@@ -18,3 +18,12 @@ target_link_libraries(test_cNotaDAO PRIVATE lib_domain)
 target_link_libraries(test_cNotaDAO PRIVATE lib_dao)
 target_link_libraries(test_cNotaDAO PRIVATE lib_util)
 add_test(NAME tb_nota COMMAND test_cNotaDAO)
+
+# Teste dos serviços da classe cAutorService
+add_executable(test_cAutorService test_cAutorService.cpp)
+target_include_directories(test_cAutorService PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(test_cAutorService PRIVATE lib_domain)
+target_link_libraries(test_cAutorService PRIVATE lib_util)
+target_link_libraries(test_cAutorService PRIVATE lib_dao)
+target_link_libraries(test_cAutorService PRIVATE lib_service)
+add_test(NAME service_autor COMMAND test_cAutorService)
