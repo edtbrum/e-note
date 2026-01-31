@@ -1,0 +1,28 @@
+- Criar Autor:
+[POST] /authors
+{
+  "nome": "Eduardo",
+  "email": "edu@teste.com"
+}
+-> createAutor
+{
+  "id": 1,
+  "nome": "Eduardo",
+  "email": "edu@teste.com"
+}
+
+- Atualizar autor
+[PUT] /authors/{id}
+{
+  "nome": "Novo Nome",
+  "email": "novo@teste.com"
+}
+-> updateAutor
+
+- Listar autores
+[GET] /authors
+-> listAutores
+
+- Apagar autor
+[DELETE] /authors/{id}
+-> deleteAutor

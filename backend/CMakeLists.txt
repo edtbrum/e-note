@@ -10,6 +10,7 @@ add_subdirectory(src/domain)
 add_subdirectory(src/dao)
 add_subdirectory(src/util)
 add_subdirectory(src/service)
+add_subdirectory(src/controller)
 
 add_executable(e-note src/main.cpp)
 
@@ -19,6 +20,7 @@ target_link_libraries(e-note PRIVATE lib_domain)
 target_link_libraries(e-note PRIVATE lib_dao)
 target_link_libraries(e-note PRIVATE lib_util)
 target_link_libraries(e-note PRIVATE lib_service)
+target_link_libraries(e-note PRIVATE lib_controller)
 
 enable_testing()
 add_subdirectory(src/test)

@@ -1,13 +1,10 @@
 ----
-Quero criar dois registros na tabela nota_link, um de link interno e outro 
-de link externo. Minha tabela nota:
-+----+---------------+----------------------------------------+---------------------+---------------------+----------+
-| id | titulo        | conteudo                               | criado_em           | atualizado_em       | autor_id |
-+----+---------------+----------------------------------------+---------------------+---------------------+----------+
-|  1 | Primeira nota | Esse nota aponta para o Google.        | 2026-01-29 09:38:08 | 2026-01-30 09:37:37 |        1 |
-| 10 | Segunda nota  | Esse nota aponta para a Primeira nota. | 2026-01-30 09:32:39 | 2026-01-30 09:40:22 |        1 |
-+----+---------------+----------------------------------------+---------------------+---------------------+----------+
 
-----
+Em relação ao controller, quero deixar padronizado:
 
-Estou pensando em quais serviços vão ser necessários para esta aplicação. No cadastro de autores, o que é melhor, o serviço que grava um novo autor já retorna a lista atualizada de autores ou deve ser dois serviços separados?
+[POST] /author -> createAutor
+[POST] /? -> updateAutor
+[GET] /authors -> listAutores
+[GET] /? -> deleteAutor
+
+--

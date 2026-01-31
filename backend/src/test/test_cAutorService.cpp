@@ -19,7 +19,7 @@ int main() {
         std::cout << ">> [OK] Autor criado com sucesso" << std::endl;
 
         newautor.setnome("Teste Teste Teste");
-        service.changeAutor(autordao, newautor);
+        service.updateAutor(autordao, newautor);
         std::cout << ">> [OK] Autor alterado com sucesso" << std::endl;
 
         std::vector<cAutor> lista = service.listAutores(autordao);

@@ -13,7 +13,7 @@ cAutor cAutorService::createAutor(IAutorDAO& autor_dao, const cAutor& autor) {
     return novo_autor;
 }
 
-void cAutorService::changeAutor(IAutorDAO& autor_dao, cAutor& autor) {
+void cAutorService::updateAutor(IAutorDAO& autor_dao, cAutor& autor) {
     autor_dao.update(autor);
 }
 
