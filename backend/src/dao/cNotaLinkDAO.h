@@ -9,6 +9,7 @@ public:
 
     cConnectionMySQL& get() override;
     void insert(cNotaLink& nlink) override;
+    void insertBatch(const std::vector<cNotaLink>& links, int notaid) override;
     std::vector<cNotaLink> findbynotaorigem(int id) override;
 
 private:

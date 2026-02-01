@@ -16,7 +16,7 @@ cConnectionMySQL& cNotaDAO::get() {
     return m_conn;
 }
 
-void cNotaDAO::insert(cNota& nota) {
+int cNotaDAO::insert(const cNota& nota) {
     try {
         auto *conn = m_conn.connection();
         sql::SQLString ssql = "INSERT INTO nota (titulo,conteudo,autor_id) VALUES (?, ?, ?)";
@@ -27,8 +27,16 @@ void cNotaDAO::insert(cNota& nota) {
 
         int rows = stmt->executeUpdate();
         if (!rows) {
-            throw std::runtime_error("Error: Insert falhou");
+            throw std::runtime_error("Error: [cNotaDAO] Insert falhou");
         }
+
+        std::unique_ptr<sql::Statement> stmtid(conn->createStatement());
+        std::unique_ptr<sql::ResultSet> res(stmtid->executeQuery("SELECT LAST_INSERT_ID()"));
+        if (res->next()) {
+            return res->getInt(1);
+        }
+
+        throw std::runtime_error("Error: [cNotaDAO] LAST_INSERT_ID falhou");
     }
     catch (const sql::SQLException& e) {
         throw std::runtime_error("Error: " + std::string(e.what()));

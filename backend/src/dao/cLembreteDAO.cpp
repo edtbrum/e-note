@@ -12,7 +12,7 @@ cConnectionMySQL& cLembreteDAO::get() {
     return m_conn;
 }
 
-void cLembreteDAO::insert(cLembrete& lembrete) {
+void cLembreteDAO::insert(const cLembrete& lembrete, int notaid) {
     try {
         auto *conn = m_conn.connection();
         sql::SQLString ssql = "INSERT INTO lembrete (id, data_hora, ativo, nota_id) VALUES (?, ?, ?, ?)";
@@ -20,11 +20,11 @@ void cLembreteDAO::insert(cLembrete& lembrete) {
         stmt->setInt(1, lembrete.identifier());
         stmt->setString(2, lembrete.data_hora());
         stmt->setBoolean(3, lembrete.ativo());
-        stmt->setInt(4, lembrete.nota_id());
+        stmt->setInt(4, notaid);
 
         int rows = stmt->executeUpdate();
         if (!rows) {
-            throw std::runtime_error("Error: Insert falhou");
+            throw std::runtime_error("Error: [cLembreteDAO] Insert falhou");
         }
     }
     catch (const sql::SQLException& e) {

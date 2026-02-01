@@ -10,6 +10,7 @@ public:
 
     cConnectionMySQL& get() override;
     void insert(cNotaTag& ntag) override;
+    void insertBatch(const std::vector<cNotaTag>& tags, int notaid) override;
     std::vector<cNotaTag> findbynotaid (int id) override;
 
 private:

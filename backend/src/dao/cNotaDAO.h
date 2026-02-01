@@ -9,7 +9,7 @@ public:
     cNotaDAO(cConnectionMySQL& conn);
 
     cConnectionMySQL& get() override;
-    void insert(cNota& nota) override;
+    int insert(const cNota& nota) override;
     void update(cNota& nota) override;
     cNota findbyid(int id) override;
 

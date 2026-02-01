@@ -1,7 +1,9 @@
 -- logar já usando db_enote com usuário dev
 -- mysql -u dev -p db_enote
 
-CREATE DATABASE IF NOT EXISTS db_enote;
+CREATE DATABASE IF NOT EXISTS db_enote
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_general_ci;
 
 USE db_enote;
 

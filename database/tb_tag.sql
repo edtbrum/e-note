@@ -17,9 +17,12 @@ CREATE TABLE IF NOT EXISTS nota_tag (
     CONSTRAINT fk_notatag_notaid FOREIGN KEY (nota_id) 
         REFERENCES nota(id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_notatag_tagid FOREIGN KEY (tag_id) 
-        REFERENCES tag(id) ON DELETE CASCADE ON UPDATE CASCADE
+        REFERENCES tag(id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4;
+
+GRANT SELECT, INSERT, DELETE ON db_enote.tag TO 'app_user';
+GRANT SELECT, INSERT, DELETE ON db_enote.nota_tag TO 'app_user';
 
 -- Tag não pode ser renomeada
 -- Relação nota-tag só pode ser criada ou removida

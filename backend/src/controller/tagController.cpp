@@ -8,15 +8,16 @@
 #include <vector>
 
 void registerCreateTagRoutes(crow::App<CorsMiddleware> &app, ITagDAO &tagdao) {
-    CROW_ROUTE(app, "/tags/<string>").methods(crow::HTTPMethod::Post)
-    ([&tagdao](const crow::request& req, std::string nome){
+    CROW_ROUTE(app, "/tags").methods(crow::HTTPMethod::Post)
+    ([&tagdao](const crow::request& req){
         try {
-            if (nome.empty()) {
-                return crow::response(400, "missing fields");
+            auto body = crow::json::load(req.body);
+            if (!body || !body.has("nome")) {
+                return crow::response(400, "Invalid JSON or missing fields");
             }
 
             cTagService service;
-            cTag tag = service.createTag(tagdao, nome);
+            cTag tag = service.createTag(tagdao, body["nome"].s());
 
             crow::json::wvalue res;
             res["id"] = tag.identifier();

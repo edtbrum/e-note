@@ -10,5 +10,6 @@ public:
 
     virtual cConnectionMySQL& get() = 0;
     virtual void insert(cNotaTag& ntag) = 0;
+    virtual void insertBatch(const std::vector<cNotaTag>& tags, int notaid) = 0;
     virtual std::vector<cNotaTag> findbynotaid (int id) = 0;
 };

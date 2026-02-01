@@ -1,4 +1,5 @@
 #include "cNotaLinkDAO.h"
+#include <cppconn/datatype.h>
 #include <cppconn/exception.h>
 #include <cppconn/prepared_statement.h>
 #include <cppconn/resultset.h>
@@ -28,6 +29,40 @@ void cNotaLinkDAO::insert(cNotaLink& nlink) {
         int rows = stmt->executeUpdate();
         if (!rows) {
             throw std::runtime_error("Error: Insert falhou");
+        }
+    }
+    catch (const sql::SQLException& e) {
+        throw std::runtime_error("Error: " + std::string(e.what()));
+    }
+}
+
+void cNotaLinkDAO::insertBatch(const std::vector<cNotaLink>& links, int notaid) {
+    try {
+        auto *conn = m_conn.connection();
+        sql::SQLString ssql = "INSERT INTO nota_link (tipo, url, nota_origem_id, nota_destino_id) VALUES (?, ?, ?, ?)";
+        std::unique_ptr<sql::PreparedStatement> stmt(conn->prepareStatement(ssql));
+
+        for (const auto& link : links) {
+            stmt->clearParameters();
+            stmt->setString(1, link.tipo());
+            stmt->setInt(3, notaid);
+
+            if (link.tipo() == "interno") {
+                stmt->setNull(2, sql::DataType::VARCHAR);
+                stmt->setInt(4, link.nota_destino_id());
+            }
+            else if (link.tipo() == "externo") {
+                stmt->setString(2, link.url());
+                stmt->setNull(4, sql::DataType::INTEGER);
+            }
+            else {
+                throw std::runtime_error("Tipo de link inválido: " + link.tipo());
+            }
+
+            int rows = stmt->executeUpdate();
+            if (!rows) {
+                throw std::runtime_error("Error: [cNotaLinkDAO] Insert falhou");
+            }
         }
     }
     catch (const sql::SQLException& e) {

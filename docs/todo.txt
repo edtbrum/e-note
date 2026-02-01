@@ -2,5 +2,5 @@ Chat GPT:
 - query para serviço
 - dao de nota com join
 -
-- services e controller para tabela Tag
+- DTO para serviço de gravar notas
 - 

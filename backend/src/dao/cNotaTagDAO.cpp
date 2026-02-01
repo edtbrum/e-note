@@ -34,6 +34,28 @@ void cNotaTagDAO::insert(cNotaTag& ntag) {
     }
 }
 
+void cNotaTagDAO::insertBatch(const std::vector<cNotaTag>& tags, int notaid) {
+    try {
+        auto *conn = m_conn.connection();
+        sql::SQLString ssql = "INSERT INTO nota_tag (nota_id, tag_id) VALUES (?, ?)";
+        std::unique_ptr<sql::PreparedStatement> stmt(conn->prepareStatement(ssql));
+        
+        for (const auto& tag : tags) {
+            stmt->clearParameters();
+            stmt->setInt(1, notaid);
+            stmt->setInt(2, tag.tag_id());
+
+            int rows = stmt->executeUpdate();
+            if (!rows) {
+                throw std::runtime_error("Error: [cNotaTagDAO] Insert falhou");
+            }
+        }
+    }
+    catch (const sql::SQLException& e) {
+        throw std::runtime_error("Error: " + std::string(e.what()));
+    }
+}
+
 std::vector<cNotaTag> cNotaTagDAO::findbynotaid (int id) {
     std::vector<cNotaTag> ntag;
     try {
