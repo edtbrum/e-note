@@ -1,5 +1,6 @@
 add_library(lib_service STATIC 
     cAutorService.cpp
+    cTagService.cpp
 )
 
 target_include_directories(lib_service PUBLIC ${CMAKE_SOURCE_DIR}/src)

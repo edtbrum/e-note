@@ -8,8 +8,10 @@ public:
     cTagDAO(cConnectionMySQL& conn);
 
     cConnectionMySQL& get() override;
-    void insert(cTag tag) override;
+    int insert(const std::string nome) override;
     cTag findbyid(int id) override;
+    std::vector<cTag> list() override;
+    void deletebyid(int id) override;
 
 private:
     cConnectionMySQL& m_conn;

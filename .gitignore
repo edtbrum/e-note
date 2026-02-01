@@ -5,4 +5,5 @@ build/
 node_modules/
 .env
 compile_commands.json
+mysql.sh
 .cache/
