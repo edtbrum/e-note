@@ -3,6 +3,7 @@
 #include "domain/cNota.h"
 #include "domain/cNotaLink.h"
 #include "domain/cNotaTag.h"
+#include "dto/create_nota_dto.h"
 #include "service/cTransactionMySQL.h"
 #include <optional>
 #include <stdexcept>
@@ -91,4 +92,49 @@ int cNotaService::createNotaDTO(const CreateNotaDTO& dto) {
     }
 
     return this->createNota(nota, lembrete, tags, links);
+}
+
+NotaResponseDTO cNotaService::findNotaById(int nota_id) {
+    cNota nota = m_repo.findNotaById(m_conn, nota_id);
+    std::optional<cLembrete> lembrete = m_repo.findLembreteByNotaid(m_conn, nota_id);
+    std::vector<cNotaTag> tags = m_repo.findTagByNotaid(m_conn, nota_id);
+    std::vector<cNotaLink> links = m_repo.findLinkByNotaid(m_conn, nota_id);
+
+    NotaResponseDTO dto;
+    dto.id = nota.identifier();
+    dto.titulo = nota.titulo();
+    dto.conteudo = nota.conteudo();
+    dto.autor = nota.autor_id();
+    dto.criado_em = nota.criado_em();
+    dto.atualizado_em = nota.atualizado_em();
+
+    if (lembrete.has_value() && lembrete->ativo()) {
+        dto.lembreteDataHora = lembrete->data_hora();
+    }
+
+    dto.tags.reserve(tags.size());
+    for (const auto& tag : tags) {
+        dto.tags.push_back(tag.tag_id());
+    }
+
+    dto.links.reserve(links.size());
+    for (const auto& l : links) {
+        LinkDTO link;
+        link.tipo = l.tipo();
+        if (link.tipo == "interno") {
+            link.notaDestinoId = l.nota_destino_id();
+            link.url = std::nullopt;
+        }
+        else if (link.tipo == "externo") {
+            link.notaDestinoId = std::nullopt;
+            link.url = l.url();
+        }
+        else {
+            throw std::runtime_error("Error: Tipo de link invalido"); // não pode ocorrer nunca! Banco protege
+        }
+
+        dto.links.push_back(link);
+    }
+
+    return dto;
 }

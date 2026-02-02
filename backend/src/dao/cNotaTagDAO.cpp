@@ -72,10 +72,6 @@ std::vector<cNotaTag> cNotaTagDAO::findbynotaid (int id) {
             ntag.push_back(t);
         }
 
-        if (ntag.empty()) {
-            throw std::runtime_error("Error: Register not found, nota_id = " + std::to_string(id));
-        }
-
         return ntag;
     }
     catch (const sql::SQLException& e) {

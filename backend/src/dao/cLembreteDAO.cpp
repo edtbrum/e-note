@@ -4,6 +4,7 @@
 #include <cppconn/resultset.h>
 #include <cppconn/sqlstring.h>
 #include <memory>
+#include <optional>
 
 cLembreteDAO::cLembreteDAO(cConnectionMySQL& conn)
 : m_conn(conn) {}
@@ -50,6 +51,30 @@ cLembrete cLembreteDAO::findbyid(int id) {
         }
 
         throw std::runtime_error("Error: [lembrete] Register not found by id = " + std::to_string(id));
+    }
+    catch (const sql::SQLException& e) {
+        throw std::runtime_error("Error: " + std::string(e.what()));
+    }
+}
+
+std::optional<cLembrete> cLembreteDAO::findbynotaid(int notaid) {
+    try {
+        auto *conn = m_conn.connection();
+        sql::SQLString ssql = "SELECT * FROM lembrete WHERE nota_id = ?";
+        std::unique_ptr<sql::PreparedStatement> stmt(conn->prepareStatement(ssql));
+        stmt->setInt(1, notaid);
+        std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+        if (res->next()) {
+            cLembrete lembrete;
+            lembrete.setidentifier(res->getInt("id"));
+            lembrete.setdata_hora(res->getString("data_hora"));
+            lembrete.setativo(res->getBoolean("ativo"));
+            lembrete.setnota_id(res->getInt("nota_id"));
+            return lembrete;
+        }
+        else {
+            return std::nullopt;
+        }
     }
     catch (const sql::SQLException& e) {
         throw std::runtime_error("Error: " + std::string(e.what()));

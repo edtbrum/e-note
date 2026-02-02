@@ -11,6 +11,7 @@ public:
     cConnectionMySQL& get() override;
     void insert(const cLembrete& lembrete, int notaid) override;
     cLembrete findbyid(int id) override;
+    std::optional<cLembrete> findbynotaid(int notaid) override;
 
 private:
     cConnectionMySQL& m_conn;

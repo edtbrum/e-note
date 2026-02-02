@@ -24,7 +24,7 @@ time_point cNota::criado_em() const {
     return m_criado_em;
 }
 
-time_point cNota::atualizado_em() const {
+std::optional<time_point> cNota::atualizado_em() const {
     return m_atualizado_em;
 }
 
@@ -48,7 +48,7 @@ void cNota::setcriado_em(time_point criado_em) {
     m_criado_em = criado_em;
 }
 
-void cNota::setatualizado_em(time_point atualizado_em) {
+void cNota::setatualizado_em(std::optional<time_point> atualizado_em) {
     m_atualizado_em = atualizado_em;
 }
 
@@ -58,7 +58,6 @@ void cNota::setautor_id(int id) {
 
 std::ostream& operator<<(std::ostream& os, const cNota& nota) {
     os  << nota.m_id << "," << nota.m_titulo << "," << nota.m_conteudo 
-        << "," << nota.m_criado_em << "," << nota.m_atualizado_em 
         << "," << nota.m_autor_id;
     return os;
 }

@@ -89,10 +89,6 @@ std::vector<cNotaLink> cNotaLinkDAO::findbynotaorigem(int id) {
             nlink.push_back(nl);
         }
 
-        if (nlink.empty()) {
-            throw std::runtime_error("Error: Register not found, nota_origem_id = " + std::to_string(id));
-        }
-
         return nlink;
     }
     catch (const sql::SQLException& e) {

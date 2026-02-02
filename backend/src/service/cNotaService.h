@@ -6,6 +6,7 @@
 #include "domain/cNotaLink.h"
 #include "domain/cNotaTag.h"
 #include "dto/create_nota_dto.h"
+#include "dto/nota_response_dto.h"
 #include "repository/INotaRepository.h"
 #include <optional>
 #include <vector>
@@ -20,6 +21,7 @@ public:
     );
 
     int createNotaDTO(const CreateNotaDTO& dto);
+    NotaResponseDTO findNotaById(int nota_id);
 
 private:
     cConnectionMySQL& m_conn;

@@ -6,6 +6,7 @@
 #include <cppconn/resultset.h>
 #include <cppconn/sqlstring.h>
 #include <memory>
+#include <optional>
 #include <stdexcept>
 #include <string>
 
@@ -76,12 +77,18 @@ cNota cNotaDAO::findbyid(int id) {
             nota.settitulo(res->getString("titulo"));
             nota.setconteudo(res->getString("conteudo"));
             nota.setcriado_em(from_string(res->getString("criado_em")));
-            nota.setatualizado_em(from_string(res->getString("atualizado_em")));
+            if (!res->isNull("atualizado_em")) {
+                nota.setatualizado_em(from_string(res->getString("atualizado_em")));
+            }
+            else {
+                nota.setatualizado_em(std::nullopt);
+            }
+            
             nota.setautor_id(res->getInt("autor_id"));
             return nota;
         }
 
-        throw std::runtime_error("Error: [nota] Register not found by id = " + std::to_string(id));
+        throw std::runtime_error("Error: [cNotaDAO] Register not found id = " + std::to_string(id));
     }
     catch (const sql::SQLException& e) {
         throw std::runtime_error("Error: " + std::string(e.what()));

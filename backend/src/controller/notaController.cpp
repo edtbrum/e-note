@@ -1,5 +1,6 @@
 #include "notaController.h"
 #include "dto/create_nota_dto.h"
+#include "dto/nota_response_dto.h"
 #include "nota_parser.h"
 #include "service/cNotaService.h"
 #include <crow/app.h>
@@ -25,6 +26,27 @@ void registerCreateNotaRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& 
             crow::response resp(201, res);
             resp.add_header("Location", "/notes/" + std::to_string(nota_id));
             return resp;
+        }
+        catch (const std::exception& e) {
+            CROW_LOG_ERROR << e.what();
+            return crow::response(500,"Internal server error");
+        }
+    });
+}
+
+void registerFindNotaByIdRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& conn, INotaRepository& repo) {
+    CROW_ROUTE(app, "/notes/<int>").methods(crow::HTTPMethod::Get)
+    ([&conn, &repo](const crow::request& req, int nota_id){
+        try {
+            if (nota_id < 1) {
+                return crow::response(400, "Invalid ID");
+            }
+
+            cNotaService service(conn, repo);
+            NotaResponseDTO dto = service.findNotaById(nota_id);
+            crow::json::wvalue res = parseFindNota(dto);
+
+            return crow::response (200, res);
         }
         catch (const std::exception& e) {
             CROW_LOG_ERROR << e.what();
