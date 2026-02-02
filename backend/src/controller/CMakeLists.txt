@@ -1,6 +1,7 @@
 add_library(lib_controller STATIC 
     autorController.cpp
     tagController.cpp
+    notaController.cpp
     nota_parser.cpp
 )
 

@@ -13,6 +13,7 @@ struct LinkDTO {
 struct CreateNotaDTO {
     std::string titulo;
     std::string conteudo;
+    int autor;
 
     std::optional<std::string> lembreteDataHora;
 

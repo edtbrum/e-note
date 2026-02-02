@@ -12,7 +12,7 @@
 cNotaService::cNotaService(cConnectionMySQL& conn, INotaRepository& repo)
 : m_conn(conn), m_repo(repo) {}
 
-void cNotaService::createNota(  
+int cNotaService::createNota(  
     const cNota& nota, 
     const std::optional<cLembrete>& lembrete,
     const std::vector<cNotaTag>& tags,
@@ -36,14 +36,16 @@ void cNotaService::createNota(
     }
 
     tx.commit();
+
+    return notaid;
 }
 
-void cNotaService::createNotaDTO(const CreateNotaDTO& dto) {
+int cNotaService::createNotaDTO(const CreateNotaDTO& dto) {
     if (dto.titulo.empty() || dto.conteudo.empty()) {
         throw std::runtime_error("Error: Titulo e conteudo obrigatorios");
     }
 
-    cNota nota(dto.titulo,dto.conteudo);
+    cNota nota(dto.titulo,dto.conteudo,dto.autor);
 
     std::optional<cLembrete> lembrete;
     if (dto.lembreteDataHora.has_value()) {
@@ -88,5 +90,5 @@ void cNotaService::createNotaDTO(const CreateNotaDTO& dto) {
         links.push_back(link);
     }
 
-    this->createNota(nota, lembrete, tags, links);
+    return this->createNota(nota, lembrete, tags, links);
 }

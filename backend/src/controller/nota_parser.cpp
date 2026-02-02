@@ -5,12 +5,13 @@ CreateNotaDTO parseCreateNota(const crow::json::rvalue& json) {
     CreateNotaDTO dto;
 
     // campos obrigatórios
-    if (!json.has("titulo") || !json.has("conteudo")) {
+    if (!json.has("titulo") || !json.has("conteudo") || !json.has("autor")) {
         throw std::runtime_error("Campos obrigatórios ausentes");
     }
 
     dto.titulo = json["titulo"].s();
     dto.conteudo = json["conteudo"].s();
+    dto.autor = json["autor"].i();
 
     // lembrete (opcional)
     if (json.has("lembrete") && json["lembrete"].has("data_hora")) {

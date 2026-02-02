@@ -11,17 +11,17 @@ int cNotaRepository::insertNota(cConnectionMySQL& conn, const cNota& nota) {
     return dao.insert(nota);
 }
 
-void insertLembrete(cConnectionMySQL& conn, const cLembrete& lembrete, int notaid) {
+void cNotaRepository::insertLembrete(cConnectionMySQL& conn, const cLembrete& lembrete, int notaid) {
     cLembreteDAO dao(conn);
     dao.insert(lembrete, notaid);
 }
 
-void insertTags(cConnectionMySQL& conn, const std::vector<cNotaTag>& tags, int notaid) {
+void cNotaRepository::insertTags(cConnectionMySQL& conn, const std::vector<cNotaTag>& tags, int notaid) {
     cNotaTagDAO dao(conn);
     dao.insertBatch(tags, notaid);
 }
 
-void insertLinks(cConnectionMySQL& conn, const std::vector<cNotaLink>& links, int notaid) {
+void cNotaRepository::insertLinks(cConnectionMySQL& conn, const std::vector<cNotaLink>& links, int notaid) {
     cNotaLinkDAO dao(conn);
     dao.insertBatch(links, notaid);
 }

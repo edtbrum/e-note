@@ -13,13 +13,13 @@
 class cNotaService {
 public:
     cNotaService(cConnectionMySQL& conn, INotaRepository& repo);
-    void createNota(const cNota& nota, 
+    int createNota( const cNota& nota, 
                     const std::optional<cLembrete>& lembrete,
                     const std::vector<cNotaTag>& tags,
                     const std::vector<cNotaLink>& links
     );
 
-    void createNotaDTO(const CreateNotaDTO& dto);
+    int createNotaDTO(const CreateNotaDTO& dto);
 
 private:
     cConnectionMySQL& m_conn;
