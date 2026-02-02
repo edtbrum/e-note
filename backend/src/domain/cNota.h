@@ -11,6 +11,7 @@ public:
     cNota() = default;
     ~cNota() = default;
     explicit cNota(std::string titulo, std::string conteudo, int autor_id);
+    explicit cNota(std::string titulo, std::string conteudo);
 
     int identifier() const;
     const std::string& titulo() const;

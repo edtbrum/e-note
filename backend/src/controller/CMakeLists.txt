@@ -1,6 +1,7 @@
 add_library(lib_controller STATIC 
     autorController.cpp
     tagController.cpp
+    nota_parser.cpp
 )
 
 target_include_directories(lib_controller PUBLIC ${CMAKE_SOURCE_DIR}/src)

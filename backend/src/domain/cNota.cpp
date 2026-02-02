@@ -3,6 +3,9 @@
 cNota::cNota(std::string titulo, std::string conteudo, int autor_id)
 : m_titulo(titulo), m_conteudo(conteudo), m_autor_id(autor_id) {}
 
+cNota::cNota(std::string titulo, std::string conteudo)
+: m_titulo(titulo), m_conteudo(conteudo) {}
+
 int cNota::identifier() const {
     return m_id;
 }

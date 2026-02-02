@@ -5,6 +5,7 @@
 #include "domain/cNota.h"
 #include "domain/cNotaLink.h"
 #include "domain/cNotaTag.h"
+#include "dto/create_nota_dto.h"
 #include "repository/INotaRepository.h"
 #include <optional>
 #include <vector>
@@ -17,6 +18,8 @@ public:
                     const std::vector<cNotaTag>& tags,
                     const std::vector<cNotaLink>& links
     );
+
+    void createNotaDTO(const CreateNotaDTO& dto);
 
 private:
     cConnectionMySQL& m_conn;
