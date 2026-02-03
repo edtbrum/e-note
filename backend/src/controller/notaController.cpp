@@ -6,7 +6,9 @@
 #include <crow/app.h>
 #include <crow/common.h>
 #include <crow/http_request.h>
+#include <crow/http_response.h>
 #include <crow/json.h>
+#include <vector>
 
 void registerCreateNotaRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& conn, INotaRepository& repo) {
     CROW_ROUTE(app, "/notes").methods(crow::HTTPMethod::Post)
@@ -47,6 +49,32 @@ void registerFindNotaByIdRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL
             crow::json::wvalue res = parseFindNota(dto);
 
             return crow::response (200, res);
+        }
+        catch (const std::exception& e) {
+            CROW_LOG_ERROR << e.what();
+            return crow::response(500,"Internal server error");
+        }
+    });
+}
+
+void registerFindNotasRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& conn, INotaRepository& repo) {
+    CROW_ROUTE(app, "/notes").methods(crow::HTTPMethod::Get)
+    ([&conn, &repo](const crow::request& req){
+        try {
+            cNotaService service(conn, repo);
+            std::vector<NotaResponseDTO> listDTO = service.findNotas();
+            crow::json::wvalue::list listJSON;
+
+            listJSON.reserve(listDTO.size());
+            for (const auto& dto : listDTO) {
+                crow::json::wvalue item = parseFindNota(dto);
+                listJSON.push_back(item);
+            }
+
+            crow::json::wvalue res;
+            res["data"] = std::move(listJSON);
+            res["count"] = listDTO.size();
+            return crow::response(200,res);
         }
         catch (const std::exception& e) {
             CROW_LOG_ERROR << e.what();

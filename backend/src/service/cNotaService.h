@@ -22,6 +22,7 @@ public:
 
     int createNotaDTO(const CreateNotaDTO& dto);
     NotaResponseDTO findNotaById(int nota_id);
+    std::vector<NotaResponseDTO> findNotas();
 
 private:
     cConnectionMySQL& m_conn;

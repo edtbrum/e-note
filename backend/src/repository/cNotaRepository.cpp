@@ -45,3 +45,8 @@ std::vector<cNotaLink> cNotaRepository::findLinkByNotaid(cConnectionMySQL& conn,
     cNotaLinkDAO dao(conn);
     return dao.findbynotaorigem(notaid);
 }
+
+std::vector<cNota> cNotaRepository::findNotas(cConnectionMySQL& conn) {
+    cNotaDAO dao(conn);
+    return dao.find();
+}

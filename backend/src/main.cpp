@@ -31,6 +31,7 @@ int main() {
     // Nota Services
     registerCreateNotaRoutes(app, conn, repo);
     registerFindNotaByIdRoutes(app, conn, repo);
+    registerFindNotasRoutes(app, conn, repo);
 
     app.port(18080).multithreaded().run();
     return 0;

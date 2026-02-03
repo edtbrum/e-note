@@ -20,4 +20,6 @@ public:
     virtual std::optional<cLembrete> findLembreteByNotaid(cConnectionMySQL& conn, int notaid) = 0;
     virtual std::vector<cNotaTag> findTagByNotaid(cConnectionMySQL& conn, int notaid) = 0;
     virtual std::vector<cNotaLink> findLinkByNotaid(cConnectionMySQL& conn, int notaid) = 0;
+
+    virtual std::vector<cNota> findNotas(cConnectionMySQL& conn) = 0;
 };

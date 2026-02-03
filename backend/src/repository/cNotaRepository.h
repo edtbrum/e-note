@@ -14,4 +14,6 @@ public:
     std::optional<cLembrete> findLembreteByNotaid(cConnectionMySQL& conn, int notaid) override;
     std::vector<cNotaTag> findTagByNotaid(cConnectionMySQL& conn, int notaid) override;
     std::vector<cNotaLink> findLinkByNotaid(cConnectionMySQL& conn, int notaid) override;
+
+    std::vector<cNota> findNotas(cConnectionMySQL& conn) override;
 };

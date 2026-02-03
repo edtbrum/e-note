@@ -12,6 +12,7 @@ public:
     int insert(const cNota& nota) override;
     void update(cNota& nota) override;
     cNota findbyid(int id) override;
+    std::vector<cNota> find() override;
 
 private:
     cConnectionMySQL& m_conn;
