@@ -82,3 +82,22 @@ void registerFindNotasRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& c
         }
     });
 }
+
+void registerDeleteNotaRoutes(crow::App<CorsMiddleware>& app, INotaDAO& notadao, INotaRepository& repo) {
+    CROW_ROUTE(app,"/notes/<int>").methods(crow::HTTPMethod::Delete)
+    ([&notadao, &repo](const crow::request& req, int nota_id){
+        try {
+            if (nota_id < 1) {
+                return crow::response(400, "Invalid ID");
+            }
+
+            cNotaService service(notadao.get(), repo);
+            service.deleteNota(notadao, nota_id);
+            return crow::response(204); // No Content
+        }
+        catch (const std::exception& e) {
+            CROW_LOG_ERROR << e.what();
+            return crow::response(500,"Internal server error");
+        }
+    });
+}

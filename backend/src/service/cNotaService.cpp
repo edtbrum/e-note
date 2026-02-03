@@ -191,3 +191,7 @@ std::vector<NotaResponseDTO> cNotaService::findNotas() {
 
     return listDTO;
 }
+
+void cNotaService::deleteNota(INotaDAO& notadao, int id) {
+    notadao.deletebyid(id);
+}

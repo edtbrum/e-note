@@ -131,3 +131,19 @@ std::vector<cNota> cNotaDAO::find() {
         throw std::runtime_error("Error: " + std::string(e.what()));
     }
 }
+
+void cNotaDAO::deletebyid(int id) {
+    try {
+        auto *conn = m_conn.connection();
+        sql::SQLString ssql = "DELETE FROM nota WHERE id = ?";
+        std::unique_ptr<sql::PreparedStatement> stmt(conn->prepareStatement(ssql));
+        stmt->setInt(1, id);
+
+        if (stmt->executeUpdate() == 0) {
+            throw std::runtime_error("Error: [cNotaDAO] Delete falhou, id = " + std::to_string(id));
+        }
+    }
+    catch (const sql::SQLException& e) {
+        throw std::runtime_error("Error: " + std::string(e.what()));
+    }
+}

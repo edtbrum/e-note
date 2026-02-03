@@ -1,5 +1,6 @@
 #pragma once
 
+#include "dao/INotaDAO.h"
 #include "dao/cConnectionMySQL.h"
 #include "domain/cLembrete.h"
 #include "domain/cNota.h"
@@ -23,6 +24,7 @@ public:
     int createNotaDTO(const CreateNotaDTO& dto);
     NotaResponseDTO findNotaById(int nota_id);
     std::vector<NotaResponseDTO> findNotas();
+    void deleteNota(INotaDAO& notadao, int id);
 
 private:
     cConnectionMySQL& m_conn;
