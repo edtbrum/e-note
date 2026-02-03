@@ -5,9 +5,16 @@
 #include "domain/cNotaTag.h"
 #include "dto/create_nota_dto.h"
 #include "dto/nota_response_dto.h"
+#include "dto/update_nota_dto.h"
 #include "service/cTransactionMySQL.h"
+#include "service/makeLinkKey.h"
+#include <algorithm>
+#include <iterator>
 #include <optional>
+#include <set>
 #include <stdexcept>
+#include <string>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -194,4 +201,128 @@ std::vector<NotaResponseDTO> cNotaService::findNotas() {
 
 void cNotaService::deleteNota(INotaDAO& notadao, int id) {
     notadao.deletebyid(id);
+}
+
+void cNotaService::updateNotaDTO(const UpdateNotaDTO& dto) {
+    auto *conn = m_conn.connection();
+    cTransactionMySQL tx(conn);
+
+    // Recupera do banco a nota atual
+    NotaResponseDTO old_dto = this->findNotaById(dto.nota_id);
+
+    // Update da tabela nota
+    cNota nota;
+    nota.setidentifier(dto.nota_id);
+    nota.settitulo(dto.titulo);
+    nota.setconteudo(dto.conteudo);
+    m_repo.updateNota(m_conn, nota);
+
+    // Tabela lembrete: insert/update ou delete ou nada
+    cLembrete lembrete;
+    switch (dto.lembreteAction) {
+        case LembreteAction::NaoAlterar:
+        break;
+
+        case LembreteAction::Salvar:
+            lembrete.setdata_hora(dto.lembreteDataHora.value());
+            lembrete.setativo(dto.ativo.value_or(true));
+
+            if (old_dto.lembreteDataHora.has_value()) {
+                m_repo.updateLembrete(m_conn, lembrete, dto.nota_id);
+            }
+            else {
+                m_repo.insertLembrete(m_conn, lembrete, dto.nota_id);
+            }
+        break;
+
+        case LembreteAction::Remover:
+            m_repo.deleteLembrete(m_conn, dto.nota_id);
+    }
+
+    // Tabela nota_tag: comparar para inserir ou deletar
+    if (dto.tags_flag) {
+        std::set<int> atuais(old_dto.tags.begin(), old_dto.tags.end());
+        std::set<int> novas(dto.tags.begin(), dto.tags.end());
+        std::vector<int> inserir;
+        std::vector<int> deletar;
+        std::vector<cNotaTag> tags;
+
+        std::set_difference(
+            novas.begin(), novas.end(), 
+            atuais.begin(), atuais.end(), 
+            std::back_inserter(inserir)
+        );
+
+        tags.reserve(inserir.size());
+        for (auto tagid : inserir) {
+            cNotaTag tag(dto.nota_id, tagid);
+            tags.push_back(tag);
+        }
+
+        if (!tags.empty()) {
+            m_repo.insertTags(m_conn, tags, dto.nota_id);
+        }
+
+        std::set_difference(
+            atuais.begin(), atuais.end(), 
+            novas.begin(), novas.end(), 
+            std::back_inserter(deletar)
+        );
+
+        for (auto tagid : deletar) {
+            cNotaTag notatag(dto.nota_id, tagid);
+            m_repo.deleteTag(m_conn, notatag);
+        }
+    }
+
+    // Tabela nota_link: comparar para inserir ou deletar
+    if (dto.links_flag) {
+        std::unordered_map<std::string, LinkDTO> link_old;
+        std::unordered_map<std::string, LinkDTO> link_new;
+
+        for (const auto& l : old_dto.links) {
+            link_old[makeLinkKey(l)] = l;
+        }
+
+        for (const auto& l : dto.links) {
+            link_new[makeLinkKey(l)] = l;
+        }
+
+        std::vector<cNotaLink> links;
+        for (const auto& [key, link] : link_new) {
+            if (!link_old.contains(key)) {
+                cNotaLink nlink;
+                nlink.settipo(link.tipo);
+                if (link.tipo == "interno") {
+                    nlink.setnota_destino_id(link.notaDestinoId.value());
+                }
+                else {
+                    nlink.seturl(link.url.value());
+                }
+                links.push_back(nlink);
+            }
+        }
+
+        if (!links.empty()) {
+            m_repo.insertLinks(m_conn, links, dto.nota_id);
+        }
+
+        for (const auto& [key, link] : link_old) {
+            if (!link_new.contains(key)) {
+                cNotaLink nlink;
+                nlink.settipo(link.tipo);
+                nlink.setnota_origem_id(dto.nota_id);
+                if (link.tipo == "interno") {
+                    nlink.setnota_destino_id(link.notaDestinoId.value());
+                }
+                else {
+                    nlink.seturl(link.url.value());
+                }
+                
+                m_repo.deleteLink(m_conn, nlink);
+            }
+        }
+    }
+
+    tx.commit();
 }

@@ -11,6 +11,7 @@ public:
     void insert(cNotaLink& nlink) override;
     void insertBatch(const std::vector<cNotaLink>& links, int notaid) override;
     std::vector<cNotaLink> findbynotaorigem(int id) override;
+    void deletebyurl(const cNotaLink& nlink) override;
 
 private:
     cConnectionMySQL& m_conn;

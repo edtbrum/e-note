@@ -1,6 +1,7 @@
 #include "notaController.h"
 #include "dto/create_nota_dto.h"
 #include "dto/nota_response_dto.h"
+#include "dto/update_nota_dto.h"
 #include "nota_parser.h"
 #include "service/cNotaService.h"
 #include <crow/app.h>
@@ -93,6 +94,32 @@ void registerDeleteNotaRoutes(crow::App<CorsMiddleware>& app, INotaDAO& notadao,
 
             cNotaService service(notadao.get(), repo);
             service.deleteNota(notadao, nota_id);
+            return crow::response(204); // No Content
+        }
+        catch (const std::exception& e) {
+            CROW_LOG_ERROR << e.what();
+            return crow::response(500,"Internal server error");
+        }
+    });
+}
+
+void registerUpdateNoteRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& conn, INotaRepository& repo) {
+    CROW_ROUTE(app, "/notes/<int>").methods(crow::HTTPMethod::Put)
+    ([&conn, &repo](const crow::request& req, int nota_id){
+        try {
+            if (nota_id < 1) {
+                return crow::response(400, "Invalid JSON");
+            }
+
+            auto body = crow::json::load(req.body);
+            if (!body) {
+                return crow::response(400, "Invalid JSON");
+            }
+
+            UpdateNotaDTO dto = parseUpdateNota(body);
+            dto.nota_id = nota_id;
+            cNotaService service(conn, repo);
+            service.updateNotaDTO(dto);
             return crow::response(204); // No Content
         }
         catch (const std::exception& e) {

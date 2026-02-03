@@ -50,3 +50,28 @@ std::vector<cNota> cNotaRepository::findNotas(cConnectionMySQL& conn) {
     cNotaDAO dao(conn);
     return dao.find();
 }
+
+void cNotaRepository::updateNota(cConnectionMySQL& conn, const cNota& nota) {
+    cNotaDAO dao(conn);
+    dao.update(nota);
+}
+
+void cNotaRepository::updateLembrete(cConnectionMySQL& conn, const cLembrete& lembrete, int notaid) {
+    cLembreteDAO dao(conn);
+    dao.update(lembrete, notaid);
+}
+
+void cNotaRepository::deleteLembrete(cConnectionMySQL& conn, int notaid) {
+    cLembreteDAO dao(conn);
+    dao.deletebynotaid(notaid);
+}
+
+void cNotaRepository::deleteTag(cConnectionMySQL& conn, const cNotaTag& notatag) {
+    cNotaTagDAO dao(conn);
+    dao.deletebyid(notatag);
+}
+
+void cNotaRepository::deleteLink(cConnectionMySQL& conn, const cNotaLink& nlink) {
+    cNotaLinkDAO dao(conn);
+    dao.deletebyurl(nlink);
+}

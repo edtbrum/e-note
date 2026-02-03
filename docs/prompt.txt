@@ -1,3 +1,10 @@
 ----
-
---
+Acho que há um problema para tags e links para update.
+std::vector<int> tags;
+std::vector<LinkDTO> links;
+Quando os dois vetores estão vazios, o service simplesmente tentava apagar todos na tabela.
+A forma que encontrei para que isso não ocorra foi criar dois flags em struct UpdateNotaDTO:
+bool tags_flag; // se true atualiza, se false ignora tags
+bool links_flag; // se true atualiza, se false ignora links
+No parser eles são setados e assim o service fica sabendo se deve ou não atualizar tags e links.
+----

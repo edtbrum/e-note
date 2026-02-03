@@ -10,7 +10,7 @@ public:
 
     cConnectionMySQL& get() override;
     int insert(const cNota& nota) override;
-    void update(cNota& nota) override;
+    void update(const cNota& nota) override;
     cNota findbyid(int id) override;
     std::vector<cNota> find() override;
     void deletebyid(int id) override;

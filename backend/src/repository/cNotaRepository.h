@@ -16,4 +16,10 @@ public:
     std::vector<cNotaLink> findLinkByNotaid(cConnectionMySQL& conn, int notaid) override;
 
     std::vector<cNota> findNotas(cConnectionMySQL& conn) override;
+
+    void updateNota(cConnectionMySQL& conn, const cNota& nota) override;
+    void updateLembrete(cConnectionMySQL& conn, const cLembrete& lembrete, int notaid) override;
+    void deleteLembrete(cConnectionMySQL& conn, int notaid) override;
+    void deleteTag(cConnectionMySQL& conn, const cNotaTag& notatag) override;
+    void deleteLink(cConnectionMySQL& conn, const cNotaLink& nlink) override;
 };

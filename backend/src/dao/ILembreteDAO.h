@@ -12,4 +12,6 @@ public:
     virtual void insert(const cLembrete& lembrete, int notaid) = 0;
     virtual cLembrete findbyid(int id) = 0;
     virtual std::optional<cLembrete> findbynotaid(int notaid) = 0;
+    virtual void deletebynotaid(int notaid) = 0;
+    virtual void update(const cLembrete& lembrete, int notaid) = 0;
 };

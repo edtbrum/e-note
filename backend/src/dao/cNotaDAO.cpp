@@ -46,7 +46,7 @@ int cNotaDAO::insert(const cNota& nota) {
     }
 }
 
-void cNotaDAO::update(cNota& nota) {
+void cNotaDAO::update(const cNota& nota) {
     try {
         auto *conn = m_conn.connection();
         sql::SQLString ssql = "UPDATE nota SET titulo = ?, conteudo = ? WHERE id = ?";
@@ -54,11 +54,7 @@ void cNotaDAO::update(cNota& nota) {
         stmt->setString(1, nota.titulo());
         stmt->setString(2, nota.conteudo());
         stmt->setInt(3, nota.identifier());
-
         int rows = stmt->executeUpdate();
-        if (!rows) {
-            throw std::runtime_error("Error: Update falhou");
-        }
     }
     catch (const sql::SQLException& e) {
         throw std::runtime_error("Error: " + std::string(e.what()));

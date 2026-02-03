@@ -78,3 +78,20 @@ std::vector<cNotaTag> cNotaTagDAO::findbynotaid (int id) {
         throw std::runtime_error("Error: " + std::string(e.what()));
     }
 }
+
+void cNotaTagDAO::deletebyid(const cNotaTag& ntag) {
+    try {
+        auto *conn = m_conn.connection();
+        sql::SQLString ssql = "DELETE FROM nota_tag WHERE nota_id = ? AND tag_id = ?";
+        std::unique_ptr<sql::PreparedStatement> stmt(conn->prepareStatement(ssql));
+        stmt->setInt(1, ntag.nota_id());
+        stmt->setInt(2, ntag.tag_id());
+
+        if (stmt->executeUpdate() == 0) {
+            throw std::runtime_error("Error: [cNotaTagDAO] Delete falhou");
+        }
+    }
+    catch (const sql::SQLException& e) {
+        throw std::runtime_error("Error: " + std::string(e.what()));
+    }
+}

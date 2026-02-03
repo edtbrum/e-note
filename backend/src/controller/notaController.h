@@ -10,3 +10,4 @@ void registerCreateNotaRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& 
 void registerFindNotaByIdRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& conn, INotaRepository& repo);
 void registerFindNotasRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& conn, INotaRepository& repo);
 void registerDeleteNotaRoutes(crow::App<CorsMiddleware>& app, INotaDAO& notadao, INotaRepository& repo);
+void registerUpdateNoteRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& conn, INotaRepository& repo);

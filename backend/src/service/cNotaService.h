@@ -8,6 +8,7 @@
 #include "domain/cNotaTag.h"
 #include "dto/create_nota_dto.h"
 #include "dto/nota_response_dto.h"
+#include "dto/update_nota_dto.h"
 #include "repository/INotaRepository.h"
 #include <optional>
 #include <vector>
@@ -25,6 +26,7 @@ public:
     NotaResponseDTO findNotaById(int nota_id);
     std::vector<NotaResponseDTO> findNotas();
     void deleteNota(INotaDAO& notadao, int id);
+    void updateNotaDTO(const UpdateNotaDTO& dto);
 
 private:
     cConnectionMySQL& m_conn;

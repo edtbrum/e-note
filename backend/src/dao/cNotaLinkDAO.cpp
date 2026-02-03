@@ -95,3 +95,33 @@ std::vector<cNotaLink> cNotaLinkDAO::findbynotaorigem(int id) {
         throw std::runtime_error("Error: " + std::string(e.what()));
     }
 }
+
+void cNotaLinkDAO::deletebyurl(const cNotaLink& nlink) {
+    try {
+        auto *conn = m_conn.connection();
+        sql::SQLString ssql;
+        if (nlink.tipo() == "interno") {
+            ssql = "DELETE FROM nota_link WHERE nota_origem_id = ? AND nota_destino_id = ?";
+        }
+        else {
+            ssql = "DELETE FROM nota_link WHERE nota_origem_id = ? AND url = ?";
+        }
+        
+        std::unique_ptr<sql::PreparedStatement> stmt(conn->prepareStatement(ssql));
+        stmt->setInt(1, nlink.nota_origem_id());
+
+        if (nlink.tipo() == "interno") {
+            stmt->setInt(2, nlink.nota_destino_id());
+        }
+        else {
+            stmt->setString(2, nlink.url());
+        }
+
+        if (stmt->executeUpdate() == 0) {
+            throw std::runtime_error("Error: [cNotaLinkDAO] Delete falhou");
+        }
+    }
+    catch (const sql::SQLException& e) {
+        throw std::runtime_error("Error: " + std::string(e.what()));
+    }
+}

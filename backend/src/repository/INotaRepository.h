@@ -22,4 +22,10 @@ public:
     virtual std::vector<cNotaLink> findLinkByNotaid(cConnectionMySQL& conn, int notaid) = 0;
 
     virtual std::vector<cNota> findNotas(cConnectionMySQL& conn) = 0;
+
+    virtual void updateNota(cConnectionMySQL& conn, const cNota& nota) = 0;
+    virtual void updateLembrete(cConnectionMySQL& conn, const cLembrete& lembrete, int notaid) = 0;
+    virtual void deleteLembrete(cConnectionMySQL& conn, int notaid) = 0;
+    virtual void deleteTag(cConnectionMySQL& conn, const cNotaTag& notatag) = 0;
+    virtual void deleteLink(cConnectionMySQL& conn, const cNotaLink& nlink) = 0;
 };

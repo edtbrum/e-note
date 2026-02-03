@@ -33,6 +33,7 @@ int main() {
     registerFindNotaByIdRoutes(app, conn, repo);
     registerFindNotasRoutes(app, conn, repo);
     registerDeleteNotaRoutes(app, nota_dao, repo);
+    registerUpdateNoteRoutes(app, conn, repo);
 
     app.port(18080).multithreaded().run();
     return 0;

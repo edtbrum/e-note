@@ -97,3 +97,97 @@ crow::json::wvalue parseFindNota(const NotaResponseDTO& dto) {
 
     return json;
 }
+
+UpdateNotaDTO parseUpdateNota(const crow::json::rvalue& json) {
+    UpdateNotaDTO dto;
+
+    // -------- obrigatórios --------
+    if (!json.has("titulo") || !json.has("conteudo")) {
+        throw std::runtime_error("Error: Campos obrigatórios ausentes");
+    }
+
+    dto.titulo   = json["titulo"].s();
+    dto.conteudo = json["conteudo"].s();
+
+    // -------- lembrete --------
+    if (!json.has("lembrete")) {
+        dto.lembreteAction = LembreteAction::NaoAlterar;
+    }
+    else if (json["lembrete"].t() == crow::json::type::Null) {
+        dto.lembreteAction = LembreteAction::Remover;
+    }
+    else {
+        // veio objeto → salvar (insert ou update)
+        const auto& lembrete = json["lembrete"];
+
+        if (!lembrete.has("data_hora")) {
+            throw std::runtime_error("Error: lembrete.data_hora é obrigatório");
+        }
+
+        dto.lembreteAction   = LembreteAction::Salvar;
+        dto.lembreteDataHora = lembrete["data_hora"].s();
+
+        // ativo é opcional
+        if (lembrete.has("ativo")) {
+            dto.ativo = lembrete["ativo"].b();
+        }
+    }
+
+    // -------- tags --------
+    if (json.has("tags")) {
+        if (!(json["tags"].t() == crow::json::type::List)) {
+            throw std::runtime_error("Error: tags deve ser uma lista");
+        }
+
+        for (const auto& t : json["tags"]) {
+            dto.tags.push_back(t.i());
+        }
+
+        dto.tags_flag = true;
+    }
+    else {
+        dto.tags_flag = false;
+    }
+
+    // -------- links --------
+    if (json.has("links")) {
+        if (!(json["links"].t() == crow::json::type::List)) {
+            throw std::runtime_error("Error: links deve ser uma lista");
+        }
+
+        for (const auto& l : json["links"]) {
+            LinkDTO link;
+
+            if (!l.has("tipo")) {
+                throw std::runtime_error("Error: link.tipo é obrigatório");
+            }
+
+            link.tipo = l["tipo"].s();
+
+            if (link.tipo == "interno") {
+                if (!l.has("nota_destino_id")) {
+                    throw std::runtime_error("Error: link interno exige nota_destino_id");
+                }
+                link.notaDestinoId = l["nota_destino_id"].i();
+            }
+            else if (link.tipo == "externo") {
+                if (!l.has("url")) {
+                    throw std::runtime_error("Error: link externo exige url");
+                }
+                link.url = l["url"].s();
+            }
+            else {
+                throw std::runtime_error("Error: Tipo de link inválido");
+            }
+
+            dto.links.push_back(link);
+        }
+
+        dto.links_flag = true;
+    }
+    else {
+        dto.links_flag = false;
+    }
+
+    return dto;
+}

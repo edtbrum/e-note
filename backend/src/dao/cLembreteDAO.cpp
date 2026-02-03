@@ -16,12 +16,11 @@ cConnectionMySQL& cLembreteDAO::get() {
 void cLembreteDAO::insert(const cLembrete& lembrete, int notaid) {
     try {
         auto *conn = m_conn.connection();
-        sql::SQLString ssql = "INSERT INTO lembrete (id, data_hora, ativo, nota_id) VALUES (?, ?, ?, ?)";
+        sql::SQLString ssql = "INSERT INTO lembrete (data_hora, ativo, nota_id) VALUES (?, ?, ?)";
         std::unique_ptr<sql::PreparedStatement> stmt(conn->prepareStatement(ssql));
-        stmt->setInt(1, lembrete.identifier());
-        stmt->setString(2, lembrete.data_hora());
-        stmt->setBoolean(3, lembrete.ativo());
-        stmt->setInt(4, notaid);
+        stmt->setString(1, lembrete.data_hora());
+        stmt->setBoolean(2, lembrete.ativo());
+        stmt->setInt(3, notaid);
 
         int rows = stmt->executeUpdate();
         if (!rows) {
@@ -75,6 +74,37 @@ std::optional<cLembrete> cLembreteDAO::findbynotaid(int notaid) {
         else {
             return std::nullopt;
         }
+    }
+    catch (const sql::SQLException& e) {
+        throw std::runtime_error("Error: " + std::string(e.what()));
+    }
+}
+
+void cLembreteDAO::deletebynotaid(int notaid) {
+    try {
+        auto *conn = m_conn.connection();
+        sql::SQLString ssql = "DELETE FROM lembrete WHERE nota_id = ?";
+        std::unique_ptr<sql::PreparedStatement> stmt(conn->prepareStatement(ssql));
+        stmt->setInt(1, notaid);
+
+        if (stmt->executeUpdate() == 0) {
+            throw std::runtime_error("Error: [cLembreteDAO] Delete falhou, nota id = " + std::to_string(notaid));
+        }
+    }
+    catch (const sql::SQLException& e) {
+        throw std::runtime_error("Error: " + std::string(e.what()));
+    }
+}
+
+void cLembreteDAO::update(const cLembrete& lembrete, int notaid) {
+    try {
+        auto *conn = m_conn.connection();
+        sql::SQLString ssql = "UPDATE lembrete SET data_hora = ?, ativo = ? WHERE nota_id = ?";
+        std::unique_ptr<sql::PreparedStatement> stmt(conn->prepareStatement(ssql));
+        stmt->setString(1, lembrete.data_hora());
+        stmt->setBoolean(2, lembrete.ativo());
+        stmt->setInt(3, notaid);
+        stmt->executeUpdate();
     }
     catch (const sql::SQLException& e) {
         throw std::runtime_error("Error: " + std::string(e.what()));
