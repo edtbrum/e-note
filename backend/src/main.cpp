@@ -7,7 +7,7 @@
 #include "dao/cTagDAO.h"
 #include "notaController.h"
 #include "tagController.h"
-#include <crow.h>
+#include <crow/app.h>
 
 int main() {
     crow::App<CorsMiddleware> app;

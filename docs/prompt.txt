@@ -1,10 +1,112 @@
 ----
-Acho que há um problema para tags e links para update.
-std::vector<int> tags;
-std::vector<LinkDTO> links;
-Quando os dois vetores estão vazios, o service simplesmente tentava apagar todos na tabela.
-A forma que encontrei para que isso não ocorra foi criar dois flags em struct UpdateNotaDTO:
-bool tags_flag; // se true atualiza, se false ignora tags
-bool links_flag; // se true atualiza, se false ignora links
-No parser eles são setados e assim o service fica sabendo se deve ou não atualizar tags e links.
+Agora quero atacar a questão das mensagens de erro que o backend envia para o front end. Poderia me listar as relevantes e como eu crio exceções personalizadas para elas?
 ----
+
+DAO  ──► exceção técnica (SQL, driver, runtime_error)
+           ↓
+SERVICE ──► exceção de domínio (com significado)
+           ↓
+CONTROLLER ──► HTTP status + body
+
+
+Erros de validação (400 – Bad Request) - Problema nos dados enviados.
+{
+  "error": "validation_error",
+  "message": "campo 'titulo' é obrigatório"
+}
+
+Recurso não encontrado (404 – Not Found) - Quando o front pede algo que não existe (autor, nota, tag...).
+{
+  "error": "not_found",
+  "message": "Nota não encontrada"
+}
+
+Conflito / regra de negócio (409 – Conflict) - Quando os dados são válidos, mas violam regras do sistema.
+{
+  "error": "conflict",
+  "message": "Tag já existe"
+}
+
+Erro de dependência / integridade (422 – Unprocessable Entity) - Muito útil para FK.
+{
+  "error": "constraint_error",
+  "message": "Autor informado não existe"
+}
+
+Erro interno (500 – Internal Server Error) - Esses não devem expor detalhes técnicos.
+{
+  "error": "internal_error",
+  "message": "Erro interno do servidor"
+}
+
+| Tipo             | HTTP | Quando usar            |
+| ---------------- | ---- | ---------------------- |
+| Validação        | 400  | Dados inválidos        |
+| Não encontrado   | 404  | ID inexistente         |
+| Conflito         | 409  | Duplicidade            |
+| Regra de negócio | 422  | FK / integridade       |
+| Erro interno     | 500  | Bug / falha inesperada |
+
+Exceção base da aplicação
+
+#include <stdexcept>
+
+class AppException : public std::runtime_error {
+public:
+    int httpStatus;
+
+    AppException(const std::string& msg, int status)
+        : std::runtime_error(msg), httpStatus(status) {}
+};
+
+Exceções específicas
+
+class ValidationException : public AppException {
+public:
+    ValidationException(const std::string& msg)
+        : AppException(msg, 400) {}
+};
+
+class NotFoundException : public AppException {
+public:
+    NotFoundException(const std::string& msg)
+        : AppException(msg, 404) {}
+};
+
+class ConflictException : public AppException {
+public:
+    ConflictException(const std::string& msg)
+        : AppException(msg, 409) {}
+};
+
+class ConstraintException : public AppException {
+public:
+    ConstraintException(const std::string& msg)
+        : AppException(msg, 422) {}
+};
+
+Usando no Service (exemplo realista)
+
+cNota nota = dao.findById(id);
+if (nota.id == 0) {
+    throw NotFoundException("Nota não encontrada");
+}
+
+Tratando no Controller (Crow)
+
+catch (const AppException& ex) {
+    crow::json::wvalue err;
+    err["error"] = "application_error";
+    err["message"] = ex.what();
+
+    return crow::response(ex.httpStatus, err);
+}
+catch (const std::exception& ex) {
+    // log(ex.what());
+
+    crow::json::wvalue err;
+    err["error"] = "internal_error";
+    err["message"] = "Erro interno do servidor";
+
+    return crow::response(500, err);
+}

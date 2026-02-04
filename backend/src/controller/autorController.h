@@ -2,7 +2,6 @@
 
 #include "sCorsMiddleware.h"
 #include "dao/IAutorDAO.h"
-#include <crow.h>
 #include <crow/app.h>
 
 void registerCreateAutorRoutes(crow::App<CorsMiddleware>& app, IAutorDAO& autordao);
