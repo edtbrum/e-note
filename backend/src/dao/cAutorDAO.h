@@ -13,6 +13,7 @@ public:
     cAutor findbyid(int id) override;
     std::vector<cAutor> list() override;
     void deletebyid(int id) override;
+    int verifyautor(int autor_id) override;
 
 private:
     cConnectionMySQL& m_conn;

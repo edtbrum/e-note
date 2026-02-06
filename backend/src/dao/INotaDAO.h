@@ -14,4 +14,5 @@ public:
     virtual cNota findbyid(int id) = 0;
     virtual std::vector<cNota> find() = 0;
     virtual void deletebyid(int id) = 0;
+    virtual int verifynota(int nota_id) = 0;
 };

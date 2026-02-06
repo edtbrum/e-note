@@ -12,6 +12,7 @@ public:
     cTag findbyid(int id) override;
     std::vector<cTag> list() override;
     void deletebyid(int id) override;
+    int verifytag(int tag_id) override;
 
 private:
     cConnectionMySQL& m_conn;

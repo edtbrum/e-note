@@ -200,7 +200,12 @@ std::vector<NotaResponseDTO> cNotaService::findNotas() {
 }
 
 void cNotaService::deleteNota(INotaDAO& notadao, int id) {
-    notadao.deletebyid(id);
+    if (notadao.verifynota(id) == 0) {
+        notadao.deletebyid(id);
+    }
+    else {
+        throw std::runtime_error("Error: Nota nao pode ser apagada");
+    }
 }
 
 void cNotaService::updateNotaDTO(const UpdateNotaDTO& dto) {

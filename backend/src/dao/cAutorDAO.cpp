@@ -124,3 +124,21 @@ void cAutorDAO::deletebyid(int id) {
         throw std::runtime_error("Error: " + std::string(e.what()));
     }
 }
+
+int cAutorDAO::verifyautor(int autor_id) {
+    try {
+        auto *conn = m_conn.connection();
+        sql::SQLString ssql = "Select COUNT(*) AS total FROM nota WHERE autor_id = ?";
+        std::unique_ptr<sql::PreparedStatement> stmt(conn->prepareStatement(ssql));
+        stmt->setInt(1, autor_id);
+        std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+        if (res->next()) {
+            return res->getInt("total");
+        }
+
+        return 0;
+    }
+    catch (const sql::SQLException& e) {
+        throw std::runtime_error("Error: " + std::string(e.what()));
+    }
+}

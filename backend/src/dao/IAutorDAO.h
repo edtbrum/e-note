@@ -14,4 +14,5 @@ public:
     virtual cAutor findbyid(int id) = 0;
     virtual std::vector<cAutor> list() = 0;
     virtual void deletebyid(int id) = 0;
+    virtual int verifyautor(int autor_id) = 0;
 };

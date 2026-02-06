@@ -104,3 +104,21 @@ void cTagDAO::deletebyid(int id) {
         throw std::runtime_error("Error: " + std::string(e.what()));
     }
 }
+
+int cTagDAO::verifytag(int tag_id) {
+    try {
+        auto *conn = m_conn.connection();
+        sql::SQLString ssql = "SELECT COUNT(*) AS total FROM nota_tag WHERE tag_id = ?";
+        std::unique_ptr<sql::PreparedStatement> stmt(conn->prepareStatement(ssql));
+        stmt->setInt(1, tag_id);
+        std::unique_ptr<sql::ResultSet> res(stmt->executeQuery());
+        if (res->next()) {
+            return res->getInt("total");
+        }
+
+        return 0;
+    }
+    catch (const sql::SQLException& e) {
+        throw std::runtime_error("Error: " + std::string(e.what()));
+    }
+}

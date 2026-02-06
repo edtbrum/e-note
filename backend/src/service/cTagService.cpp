@@ -18,5 +18,10 @@ std::vector<cTag> cTagService::listTags(ITagDAO& tagdao) {
 }
 
 void cTagService::deleteTag(ITagDAO& tagdao, int id) {
-    tagdao.deletebyid(id);
+    if (tagdao.verifytag(id) == 0) {
+        tagdao.deletebyid(id);
+    }
+    else {
+        throw std::runtime_error("Error: Tag nao pode ser apagada");
+    }
 }

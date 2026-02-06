@@ -22,5 +22,10 @@ std::vector<cAutor> cAutorService::listAutores(IAutorDAO& autor_dao) {
 }
 
 void cAutorService::deleteAutor(IAutorDAO& autor_dao, int id) {
-    autor_dao.deletebyid(id);
+    if (autor_dao.verifyautor(id) == 0) {
+        autor_dao.deletebyid(id);
+    }
+    else {
+        throw std::runtime_error("Error: Autor nao pode ser apagado");
+    }
 }
