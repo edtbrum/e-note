@@ -1,4 +1,5 @@
 #include "notaController.h"
+#include "dao/INotaDAO.h"
 #include "dto/create_nota_dto.h"
 #include "dto/nota_response_dto.h"
 #include "dto/update_nota_dto.h"
@@ -121,6 +122,33 @@ void registerUpdateNoteRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& 
             cNotaService service(conn, repo);
             service.updateNotaDTO(dto);
             return crow::response(204); // No Content
+        }
+        catch (const std::exception& e) {
+            CROW_LOG_ERROR << e.what();
+            return crow::response(500,"Internal server error");
+        }
+    });
+}
+
+void registerListNotasIdRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& conn, INotaRepository& repo) {
+    CROW_ROUTE(app, "/notes/references").methods(crow::HTTPMethod::Get)
+    ([&conn, &repo](const crow::request& req){
+        try {
+            cNotaService service(conn, repo);
+            std::vector<sNotaTituloId> ntid_list = service.listNotasForTags();
+            crow::json::wvalue::list listJSON;
+
+            listJSON.reserve(ntid_list.size());
+            for (const auto& ntid : ntid_list) {
+                crow::json::wvalue item;
+                item = parseListForTags(ntid);
+                listJSON.push_back(item);
+            }
+
+            crow::json::wvalue res;
+            res["data"] = std::move(listJSON);
+            res["count"] = ntid_list.size();
+            return crow::response(200,res);
         }
         catch (const std::exception& e) {
             CROW_LOG_ERROR << e.what();

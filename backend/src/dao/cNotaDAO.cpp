@@ -1,4 +1,5 @@
 #include "dao/cNotaDAO.h"
+#include "dao/INotaDAO.h"
 #include "domain/cNota.h"
 #include "util/uTimePoint.h"
 #include <cppconn/exception.h>
@@ -156,6 +157,28 @@ int cNotaDAO::verifynota(int nota_id) {
         }
 
         return 0;
+    }
+    catch (const sql::SQLException& e) {
+        throw std::runtime_error("Error: " + std::string(e.what()));
+    }
+}
+
+std::vector<sNotaTituloId> cNotaDAO::listtituloid() {
+    try {
+        auto *conn = m_conn.connection();
+        sql::SQLString ssql = "SELECT id, titulo FROM nota";
+        std::unique_ptr<sql::Statement> stmt(conn->createStatement());
+        std::unique_ptr<sql::ResultSet> res(stmt->executeQuery(ssql));
+
+        std::vector<sNotaTituloId> ntid_list;
+        while (res->next()) {
+            sNotaTituloId ntid;
+            ntid.id = res->getInt("id");
+            ntid.titulo = res->getString("titulo");
+            ntid_list.push_back(ntid);
+        }
+
+        return ntid_list;
     }
     catch (const sql::SQLException& e) {
         throw std::runtime_error("Error: " + std::string(e.what()));

@@ -116,6 +116,9 @@ UpdateNotaDTO parseUpdateNota(const crow::json::rvalue& json) {
     else if (json["lembrete"].t() == crow::json::type::Null) {
         dto.lembreteAction = LembreteAction::Remover;
     }
+    else if (json["lembrete"].t() != crow::json::type::Object) {
+        throw std::runtime_error("Error: lembrete deve ser objeto ou null");
+    }
     else {
         // veio objeto → salvar (insert ou update)
         const auto& lembrete = json["lembrete"];
@@ -190,4 +193,12 @@ UpdateNotaDTO parseUpdateNota(const crow::json::rvalue& json) {
     }
 
     return dto;
+}
+
+crow::json::wvalue parseListForTags(const sNotaTituloId& ntid) {
+    crow::json::wvalue json;
+
+    json["id"] = ntid.id;
+    json["titulo"] = ntid.titulo;
+    return json;
 }

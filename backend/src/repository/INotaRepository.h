@@ -1,5 +1,6 @@
 #pragma once
 
+#include "dao/INotaDAO.h"
 #include "dao/cConnectionMySQL.h"
 #include "domain/cLembrete.h"
 #include "domain/cNota.h"
@@ -28,4 +29,6 @@ public:
     virtual void deleteLembrete(cConnectionMySQL& conn, int notaid) = 0;
     virtual void deleteTag(cConnectionMySQL& conn, const cNotaTag& notatag) = 0;
     virtual void deleteLink(cConnectionMySQL& conn, const cNotaLink& nlink) = 0;
+
+    virtual std::vector<sNotaTituloId> listNotaByTituloId(cConnectionMySQL& conn) = 0;
 };

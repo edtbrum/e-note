@@ -1,6 +1,7 @@
 #pragma once
 
 #include <crow/json.h>
+#include "dao/INotaDAO.h"
 #include "dto/create_nota_dto.h"
 #include "dto/nota_response_dto.h"
 #include "dto/update_nota_dto.h"
@@ -8,3 +9,4 @@
 CreateNotaDTO parseCreateNota(const crow::json::rvalue& json);
 crow::json::wvalue parseFindNota(const NotaResponseDTO& dto);
 UpdateNotaDTO parseUpdateNota(const crow::json::rvalue& json);
+crow::json::wvalue parseListForTags(const sNotaTituloId& ntid);

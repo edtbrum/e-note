@@ -27,6 +27,7 @@ public:
     std::vector<NotaResponseDTO> findNotas();
     void deleteNota(INotaDAO& notadao, int id);
     void updateNotaDTO(const UpdateNotaDTO& dto);
+    std::vector<sNotaTituloId> listNotasForTags();
 
 private:
     cConnectionMySQL& m_conn;

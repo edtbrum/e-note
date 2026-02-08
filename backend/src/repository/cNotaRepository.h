@@ -22,4 +22,6 @@ public:
     void deleteLembrete(cConnectionMySQL& conn, int notaid) override;
     void deleteTag(cConnectionMySQL& conn, const cNotaTag& notatag) override;
     void deleteLink(cConnectionMySQL& conn, const cNotaLink& nlink) override;
+
+    std::vector<sNotaTituloId> listNotaByTituloId(cConnectionMySQL& conn) override;
 };

@@ -331,3 +331,7 @@ void cNotaService::updateNotaDTO(const UpdateNotaDTO& dto) {
 
     tx.commit();
 }
+
+std::vector<sNotaTituloId> cNotaService::listNotasForTags() {
+    return m_repo.listNotaByTituloId(m_conn);
+}

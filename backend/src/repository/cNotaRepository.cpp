@@ -75,3 +75,8 @@ void cNotaRepository::deleteLink(cConnectionMySQL& conn, const cNotaLink& nlink)
     cNotaLinkDAO dao(conn);
     dao.deletebyurl(nlink);
 }
+
+std::vector<sNotaTituloId> cNotaRepository::listNotaByTituloId(cConnectionMySQL& conn) {
+    cNotaDAO dao(conn);
+    return dao.listtituloid();
+}
