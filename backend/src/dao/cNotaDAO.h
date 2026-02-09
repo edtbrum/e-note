@@ -16,6 +16,7 @@ public:
     void deletebyid(int id) override;
     int verifynota(int nota_id) override;
     std::vector<sNotaTituloId> listtituloid() override;
+    std::vector<cNota> searchtext(const std::string text) override;
 
 private:
     cConnectionMySQL& m_conn;

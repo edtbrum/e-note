@@ -22,4 +22,5 @@ public:
     virtual void deletebyid(int id) = 0;
     virtual int verifynota(int nota_id) = 0;
     virtual std::vector<sNotaTituloId> listtituloid() = 0;
+    virtual std::vector<cNota> searchtext(const std::string text) = 0;
 };

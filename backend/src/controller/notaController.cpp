@@ -156,3 +156,39 @@ void registerNotasReferencesRoutes(crow::App<CorsMiddleware>& app, cConnectionMy
         }
     });
 }
+
+void registerSearchNotasByText(crow::App<CorsMiddleware>& app, cConnectionMySQL& conn, INotaRepository& repo) {
+    CROW_ROUTE(app, "/notes/search").methods(crow::HTTPMethod::Get)
+    ([&conn, &repo](const crow::request& req){
+        try {
+            const char* q = req.url_params.get("q");
+            if (!q) {
+                return crow::response(400,"Parametro q eh obrigatorio");
+            }
+
+            std::string text = q ? q : "";
+            cNotaService service(conn, repo);
+            std::vector<NotaResponseDTO> listDTO = service.searchTextNotas(text);
+            crow::json::wvalue::list listJSON;
+
+            listJSON.reserve(listDTO.size());
+            for (const auto& dto : listDTO) {
+                crow::json::wvalue item = parseFindNota(dto);
+                listJSON.push_back(item);
+            }
+
+            crow::json::wvalue res;
+            res["data"] = std::move(listJSON);
+            res["count"] = listDTO.size();
+            return crow::response(200,res);
+        }
+        catch (const std::exception& e) {
+            CROW_LOG_ERROR << e.what();
+            return crow::response(500,"Internal server error");
+        }
+    });
+}
+
+/*
+
+*/

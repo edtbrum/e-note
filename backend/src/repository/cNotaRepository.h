@@ -24,4 +24,5 @@ public:
     void deleteLink(cConnectionMySQL& conn, const cNotaLink& nlink) override;
 
     std::vector<sNotaTituloId> listNotaByTituloId(cConnectionMySQL& conn) override;
+    std::vector<cNota> searchNotasByText(cConnectionMySQL& conn, const std::string text) override;
 };

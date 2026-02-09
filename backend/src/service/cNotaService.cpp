@@ -339,3 +339,57 @@ void cNotaService::updateNotaDTO(const UpdateNotaDTO& dto) {
 std::vector<sNotaTituloId> cNotaService::listNotasForTags() {
     return m_repo.listNotaByTituloId(m_conn);
 }
+
+std::vector<NotaResponseDTO> cNotaService::searchTextNotas(const std::string text) {
+    std::vector<cNota> notas = m_repo.searchNotasByText(m_conn, text);
+    std::vector<NotaResponseDTO> listDTO;
+    
+    listDTO.reserve(notas.size());
+    for (const auto& nota : notas) {
+        std::optional<cLembrete> lembrete = m_repo.findLembreteByNotaid(m_conn, nota.identifier());
+        std::vector<cNotaTag> tags = m_repo.findTagByNotaid(m_conn, nota.identifier());
+        std::vector<cNotaLink> links = m_repo.findLinkByNotaid(m_conn, nota.identifier());
+
+        NotaResponseDTO dto;
+        dto.id = nota.identifier();
+        dto.titulo = nota.titulo();
+        dto.conteudo = nota.conteudo();
+        dto.autor = nota.autor_id();
+        dto.criado_em = nota.criado_em();
+        dto.atualizado_em = nota.atualizado_em();
+
+        if (lembrete.has_value() && lembrete->ativo()) {
+            dto.lembreteDataHora = lembrete->data_hora();
+        }
+
+        dto.tags.reserve(tags.size());
+        for (const auto& tag : tags) {
+            dto.tags.push_back(tag.tag_id());
+        }
+
+        dto.links.reserve(links.size());
+        for (const auto& l : links) {
+            LinkDTO link;
+            link.tipo = l.tipo();
+            if (link.tipo == "interno") {
+                link.notaDestinoId = l.nota_destino_id();
+                link.url = std::nullopt;
+                link.notaDestinoTitulo = l.destino_titulo();
+            }
+            else if (link.tipo == "externo") {
+                link.notaDestinoId = std::nullopt;
+                link.url = l.url();
+                link.notaDestinoTitulo = std::nullopt;
+            }
+            else {
+                throw std::runtime_error("Error: Tipo de link invalido"); // não pode ocorrer nunca! Banco protege
+            }
+
+            dto.links.push_back(link);
+        }
+
+        listDTO.push_back(dto);
+    }
+
+    return listDTO;
+}

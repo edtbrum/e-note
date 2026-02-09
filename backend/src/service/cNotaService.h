@@ -11,6 +11,7 @@
 #include "dto/update_nota_dto.h"
 #include "repository/INotaRepository.h"
 #include <optional>
+#include <string>
 #include <vector>
 
 class cNotaService {
@@ -28,6 +29,7 @@ public:
     void deleteNota(INotaDAO& notadao, int id);
     void updateNotaDTO(const UpdateNotaDTO& dto);
     std::vector<sNotaTituloId> listNotasForTags();
+    std::vector<NotaResponseDTO> searchTextNotas(const std::string text);
 
 private:
     cConnectionMySQL& m_conn;

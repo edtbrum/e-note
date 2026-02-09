@@ -80,3 +80,8 @@ std::vector<sNotaTituloId> cNotaRepository::listNotaByTituloId(cConnectionMySQL&
     cNotaDAO dao(conn);
     return dao.listtituloid();
 }
+
+std::vector<cNota> cNotaRepository::searchNotasByText(cConnectionMySQL& conn, const std::string text) {
+    cNotaDAO dao(conn);
+    return dao.searchtext(text);
+}

@@ -11,3 +11,4 @@ void registerFindNotasRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& c
 void registerDeleteNotaRoutes(crow::App<CorsMiddleware>& app, INotaDAO& notadao, INotaRepository& repo);
 void registerUpdateNoteRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& conn, INotaRepository& repo);
 void registerNotasReferencesRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& conn, INotaRepository& repo);
+void registerSearchNotasByText(crow::App<CorsMiddleware>& app, cConnectionMySQL& conn, INotaRepository& repo);

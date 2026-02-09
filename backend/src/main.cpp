@@ -35,7 +35,9 @@ int main() {
     registerDeleteNotaRoutes(app, nota_dao, repo);
     registerUpdateNoteRoutes(app, conn, repo);
     registerNotasReferencesRoutes(app, conn, repo);
+    registerSearchNotasByText(app, conn, repo);
 
+    app.port(18080).concurrency(1);
     app.port(18080).multithreaded().run();
     return 0;
 }

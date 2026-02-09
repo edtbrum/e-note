@@ -6,6 +6,7 @@
 #include "domain/cNota.h"
 #include "domain/cNotaLink.h"
 #include "domain/cNotaTag.h"
+#include <string>
 #include <vector>
 
 class INotaRepository {
@@ -31,4 +32,5 @@ public:
     virtual void deleteLink(cConnectionMySQL& conn, const cNotaLink& nlink) = 0;
 
     virtual std::vector<sNotaTituloId> listNotaByTituloId(cConnectionMySQL& conn) = 0;
+    virtual std::vector<cNota> searchNotasByText(cConnectionMySQL& conn, const std::string text) = 0;
 };
