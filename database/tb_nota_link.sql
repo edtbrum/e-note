@@ -67,3 +67,8 @@ LEFT JOIN nota nd ON nd.id = nl.nota_destino_id;
 |  1 | externo | https://www.google.com |              1 | Primeira nota |            NULL | NULL          |
 |  2 | interno | NULL                   |             10 | Segunda nota  |               1 | Primeira nota |
 +----+---------+------------------------+----------------+---------------+-----------------+---------------+
+
+SELECT
+    nl.id, nl.tipo, nl.url, nl.nota_origem_id, nl.nota_destino_id, nd.titulo AS titulo
+FROM nota_link nl LEFT JOIN nota nd ON nd.id = nl.nota_destino_id;
+WHERE nl.nota_origem_id = 15;

@@ -74,7 +74,8 @@ std::vector<cNotaLink> cNotaLinkDAO::findbynotaorigem(int id) {
     std::vector<cNotaLink> nlink;
     try {
         auto *conn = m_conn.connection();
-        sql::SQLString ssql = "SELECT id, tipo, url, nota_destino_id FROM nota_link WHERE nota_origem_id = ?";
+        sql::SQLString ssql = "SELECT nl.id, nl.tipo, nl.url, nl.nota_origem_id, nl.nota_destino_id, nd.titulo AS titulo "
+            "FROM nota_link nl LEFT JOIN nota nd ON nd.id = nl.nota_destino_id WHERE nl.nota_origem_id = ?";
         std::unique_ptr<sql::PreparedStatement> stmt(conn->prepareStatement(ssql));
         stmt->setInt(1, id);
 
@@ -86,6 +87,7 @@ std::vector<cNotaLink> cNotaLinkDAO::findbynotaorigem(int id) {
             nl.seturl(res->getString("url"));
             nl.setnota_origem_id(id);
             nl.setnota_destino_id(res->getInt("nota_destino_id"));
+            nl.setdestino_titulo(res->getString("titulo"));
             nlink.push_back(nl);
         }
 

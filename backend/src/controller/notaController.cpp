@@ -130,7 +130,7 @@ void registerUpdateNoteRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& 
     });
 }
 
-void registerListNotasIdRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& conn, INotaRepository& repo) {
+void registerNotasReferencesRoutes(crow::App<CorsMiddleware>& app, cConnectionMySQL& conn, INotaRepository& repo) {
     CROW_ROUTE(app, "/notes/references").methods(crow::HTTPMethod::Get)
     ([&conn, &repo](const crow::request& req){
         try {

@@ -82,6 +82,7 @@ crow::json::wvalue parseFindNota(const NotaResponseDTO& dto) {
 
             if (link.tipo == "interno") {
                 jsonLink["nota_destino_id"] = link.notaDestinoId.value();
+                jsonLink["nota_destino_titulo"] = link.notaDestinoTitulo.value();
             }
             else if (link.tipo == "externo") {
                 jsonLink["url"] = link.url.value();

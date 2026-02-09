@@ -8,6 +8,7 @@ struct LinkDTO {
     std::string tipo; // "interno" | "externo"
     std::optional<int> notaDestinoId;
     std::optional<std::string> url;
+    std::optional<std::string> notaDestinoTitulo;
 };
 
 struct CreateNotaDTO {

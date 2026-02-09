@@ -7,19 +7,21 @@ class cNotaLink {
 public:
     cNotaLink() = default;
     ~cNotaLink() = default;
-    cNotaLink(int id, std::string tipo, std::string url, int orig, int dest);
+    cNotaLink(int id, std::string tipo, std::string url, int orig, int dest, std::string tit);
 
     int identifier() const;
     const std::string& tipo() const;
     const std::string& url() const;
     int nota_origem_id() const;
     int nota_destino_id() const;
+    const std::string destino_titulo() const;
 
     void setidentifier(int id);
     void settipo(std::string tipo);
     void seturl(std::string url);
     void setnota_origem_id(int id);
     void setnota_destino_id(int id);
+    void setdestino_titulo(std::string titulo);
 
     friend std::ostream& operator<<(std::ostream& os, const cNotaLink& nlink);
 
@@ -29,4 +31,5 @@ private:
     std::string m_url;
     int m_nota_origem_id {};
     int m_nota_destino_id {};
+    std::string m_destino_titulo;
 };

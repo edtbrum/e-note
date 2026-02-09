@@ -132,10 +132,12 @@ NotaResponseDTO cNotaService::findNotaById(int nota_id) {
         if (link.tipo == "interno") {
             link.notaDestinoId = l.nota_destino_id();
             link.url = std::nullopt;
+            link.notaDestinoTitulo = l.destino_titulo();
         }
         else if (link.tipo == "externo") {
             link.notaDestinoId = std::nullopt;
             link.url = l.url();
+            link.notaDestinoTitulo = std::nullopt;
         }
         else {
             throw std::runtime_error("Error: Tipo de link invalido"); // não pode ocorrer nunca! Banco protege
@@ -181,10 +183,12 @@ std::vector<NotaResponseDTO> cNotaService::findNotas() {
             if (link.tipo == "interno") {
                 link.notaDestinoId = l.nota_destino_id();
                 link.url = std::nullopt;
+                link.notaDestinoTitulo = l.destino_titulo();
             }
             else if (link.tipo == "externo") {
                 link.notaDestinoId = std::nullopt;
                 link.url = l.url();
+                link.notaDestinoTitulo = std::nullopt;
             }
             else {
                 throw std::runtime_error("Error: Tipo de link invalido"); // não pode ocorrer nunca! Banco protege
